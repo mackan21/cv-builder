@@ -1,4 +1,7 @@
 import styles from './App.module.css'
+import { PersonalSection } from './components/PersonalSection'
+import { SummarySection } from './components/SummarySection'
+import { SkillsSection } from './components/SkillsSection'
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
       <main className={styles.layout}>
         <div className={styles.formPanel}>
           <div className={styles.panelLabel}>editor</div>
+          <PersonalSection />
+          <SummarySection />
+          <SkillsSection />
         </div>
         <div className={styles.previewPanel}>
           <div className={styles.panelLabel}>preview</div>
