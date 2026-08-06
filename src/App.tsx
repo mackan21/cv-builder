@@ -4,6 +4,7 @@ import { SummarySection } from './components/SummarySection'
 import { ExperienceSection } from './components/ExperienceSection'
 import { EducationSection } from './components/EducationSection'
 import { SkillsSection } from './components/SkillsSection'
+import { ResumePage } from './components/ResumePage'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         </div>
         <div className={styles.previewPanel}>
           <div className={styles.panelLabel}>preview</div>
+          <ResumePage />
         </div>
       </main>
     </div>
