@@ -137,6 +137,30 @@
   color: var(--page-ink-muted);
 }
 
+.entryBullets {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--page-ink-muted);
+}
+
+.entryBullets li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.entryBullets li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+}
+
+.entryBullets li + li {
+  margin-top: 2px;
+}
+
 .skills {
   display: flex;
   flex-wrap: wrap;

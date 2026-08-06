@@ -72,14 +72,14 @@ export function ExperienceSection() {
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor={`description-${item.id}`}>
-              Description
+              Description (one bullet per line)
             </label>
             <textarea
               id={`description-${item.id}`}
               className={formStyles.textarea}
               value={item.description}
               onChange={(e) => updateExperience(item.id, { description: e.target.value })}
-              rows={3}
+              rows={4}
             />
           </div>
         </div>

@@ -30,21 +30,33 @@ export function ResumePage() {
         {data.experience.length > 0 && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Experience</h2>
-            {data.experience.map((item) => (
-              <div key={item.id} className={styles.entry}>
-                <div className={styles.entryHead}>
-                  <span className={styles.entryRole}>
-                    {item.role}
-                    {item.company ? `, ${item.company}` : ''}
-                  </span>
-                  <span className={styles.entryDates}>
-                    {item.start}
-                    {item.end ? ` – ${item.end}` : ''}
-                  </span>
+            {data.experience.map((item) => {
+              const bullets = item.description
+                .split('\n')
+                .map((line) => line.trim())
+                .filter(Boolean)
+              return (
+                <div key={item.id} className={styles.entry}>
+                  <div className={styles.entryHead}>
+                    <span className={styles.entryRole}>
+                      {item.role}
+                      {item.company ? `, ${item.company}` : ''}
+                    </span>
+                    <span className={styles.entryDates}>
+                      {item.start}
+                      {item.end ? ` – ${item.end}` : ''}
+                    </span>
+                  </div>
+                  {bullets.length > 0 && (
+                    <ul className={styles.entryBullets}>
+                      {bullets.map((line, idx) => (
+                        <li key={idx}>{line}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
-                {item.description && <p className={styles.entryDescription}>{item.description}</p>}
-              </div>
-            ))}
+              )
+            })}
           </section>
         )}
 
