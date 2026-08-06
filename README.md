@@ -1,32 +1,48 @@
-# React + TypeScript + Vite
+# CV Forge
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Build a resume section by section, watch it take shape on a real page as you type,
+and export it straight to PDF.
 
-Currently, two official plugins are available:
+![CV Forge screenshot](docs/screenshot.webp)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Why
 
-## React Compiler
+A resume builder that's also genuinely useful — fill in personal details, a summary,
+any number of experience and education entries, and skills, and the right-hand page
+updates live. When it looks right, hit **Export PDF** for a clean, print-ready file.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the Oxlint configuration
+- Live preview — the page on the right always reflects exactly what you'd get in the
+  PDF, styled as an actual resume rather than a generic app screen
+- Repeatable experience and education entries — add or remove as many as you need
+- One-click PDF export via the browser's own print engine (no heavy rendering
+  library, no quality loss)
+- Everything is saved to `localStorage` automatically — refresh and your data is
+  still there
+- Keyboard-accessible, respects `prefers-reduced-motion`, responsive down to mobile
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Design
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+The editor chrome is a dark, technical "drafting desk" — deliberately not the same
+look as the document it produces. The preview page is a real white page with ruler
+guides along the top and left edges, because the thing being built is a printable
+document, not just another web page.
+
+## Stack
+
+React 19 + TypeScript + Vite, Zustand for state (with the `persist` middleware for
+`localStorage`). No backend — everything runs client-side.
+
+## Getting started
+
+```sh
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Build
+
+```sh
+npm run build
+```
