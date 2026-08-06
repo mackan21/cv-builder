@@ -26,32 +26,44 @@ export function ExperienceSection() {
           </div>
           <div className={formStyles.grid}>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>Role</label>
+              <label className={formStyles.label} htmlFor={`role-${item.id}`}>
+                Role
+              </label>
               <input
+                id={`role-${item.id}`}
                 className={formStyles.input}
                 value={item.role}
                 onChange={(e) => updateExperience(item.id, { role: e.target.value })}
               />
             </div>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>Company</label>
+              <label className={formStyles.label} htmlFor={`company-${item.id}`}>
+                Company
+              </label>
               <input
+                id={`company-${item.id}`}
                 className={formStyles.input}
                 value={item.company}
                 onChange={(e) => updateExperience(item.id, { company: e.target.value })}
               />
             </div>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>Start</label>
+              <label className={formStyles.label} htmlFor={`exp-start-${item.id}`}>
+                Start
+              </label>
               <input
+                id={`exp-start-${item.id}`}
                 className={formStyles.input}
                 value={item.start}
                 onChange={(e) => updateExperience(item.id, { start: e.target.value })}
               />
             </div>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>End</label>
+              <label className={formStyles.label} htmlFor={`exp-end-${item.id}`}>
+                End
+              </label>
               <input
+                id={`exp-end-${item.id}`}
                 className={formStyles.input}
                 value={item.end}
                 onChange={(e) => updateExperience(item.id, { end: e.target.value })}
@@ -59,8 +71,11 @@ export function ExperienceSection() {
             </div>
           </div>
           <div className={formStyles.field}>
-            <label className={formStyles.label}>Description</label>
+            <label className={formStyles.label} htmlFor={`description-${item.id}`}>
+              Description
+            </label>
             <textarea
+              id={`description-${item.id}`}
               className={formStyles.textarea}
               value={item.description}
               onChange={(e) => updateExperience(item.id, { description: e.target.value })}

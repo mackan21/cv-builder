@@ -2,6 +2,22 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  animation: fade-in 0.4s ease both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app {
+    animation: none;
+  }
 }
 
 .header {
@@ -94,6 +110,33 @@
   text-transform: uppercase;
   color: var(--ink-faint);
   margin-bottom: 16px;
+}
+
+.panelLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panelLabelRow .panelLabel {
+  margin-bottom: 16px;
+}
+
+.resetButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.resetButton:hover {
+  color: var(--accent);
 }
 
 @media (max-width: 900px) {

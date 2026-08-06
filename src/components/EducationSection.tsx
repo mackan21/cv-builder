@@ -26,32 +26,44 @@ export function EducationSection() {
           </div>
           <div className={formStyles.grid}>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>School</label>
+              <label className={formStyles.label} htmlFor={`school-${item.id}`}>
+                School
+              </label>
               <input
+                id={`school-${item.id}`}
                 className={formStyles.input}
                 value={item.school}
                 onChange={(e) => updateEducation(item.id, { school: e.target.value })}
               />
             </div>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>Degree / programme</label>
+              <label className={formStyles.label} htmlFor={`degree-${item.id}`}>
+                Degree / programme
+              </label>
               <input
+                id={`degree-${item.id}`}
                 className={formStyles.input}
                 value={item.degree}
                 onChange={(e) => updateEducation(item.id, { degree: e.target.value })}
               />
             </div>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>Start</label>
+              <label className={formStyles.label} htmlFor={`edu-start-${item.id}`}>
+                Start
+              </label>
               <input
+                id={`edu-start-${item.id}`}
                 className={formStyles.input}
                 value={item.start}
                 onChange={(e) => updateEducation(item.id, { start: e.target.value })}
               />
             </div>
             <div className={formStyles.field}>
-              <label className={formStyles.label}>End</label>
+              <label className={formStyles.label} htmlFor={`edu-end-${item.id}`}>
+                End
+              </label>
               <input
+                id={`edu-end-${item.id}`}
                 className={formStyles.input}
                 value={item.end}
                 onChange={(e) => updateEducation(item.id, { end: e.target.value })}

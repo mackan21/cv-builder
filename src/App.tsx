@@ -5,8 +5,15 @@ import { ExperienceSection } from './components/ExperienceSection'
 import { EducationSection } from './components/EducationSection'
 import { SkillsSection } from './components/SkillsSection'
 import { ResumePage } from './components/ResumePage'
+import { useCVStore } from './store/cvStore'
 
 function App() {
+  const reset = useCVStore((state) => state.reset)
+
+  function handleReset() {
+    if (window.confirm('Clear everything and start over?')) reset()
+  }
+
   return (
     <div className={`${styles.app} print-reset`}>
       <header className={`${styles.header} print-hide`}>
@@ -33,7 +40,12 @@ function App() {
 
       <main className={`${styles.layout} print-reset`}>
         <div className={`${styles.formPanel} print-hide`}>
-          <div className={styles.panelLabel}>editor</div>
+          <div className={styles.panelLabelRow}>
+            <div className={styles.panelLabel}>editor</div>
+            <button type="button" className={styles.resetButton} onClick={handleReset}>
+              Reset
+            </button>
+          </div>
           <PersonalSection />
           <SummarySection />
           <ExperienceSection />
