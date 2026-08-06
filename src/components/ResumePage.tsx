@@ -9,9 +9,9 @@ export function ResumePage() {
     .filter(Boolean)
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.ruler} aria-hidden="true"></div>
-      <div className={styles.rulerSide} aria-hidden="true"></div>
+    <div className={`${styles.wrapper} print-reset`}>
+      <div className={`${styles.ruler} print-hide`} aria-hidden="true"></div>
+      <div className={`${styles.rulerSide} print-hide`} aria-hidden="true"></div>
       <div className={`${styles.page} print-page`} id="resume-page">
         <header className={styles.header}>
           <h1 className={styles.name}>{data.name || 'Your Name'}</h1>
