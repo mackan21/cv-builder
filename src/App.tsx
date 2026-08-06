@@ -1,6 +1,8 @@
 import styles from './App.module.css'
 import { PersonalSection } from './components/PersonalSection'
 import { SummarySection } from './components/SummarySection'
+import { ExperienceSection } from './components/ExperienceSection'
+import { EducationSection } from './components/EducationSection'
 import { SkillsSection } from './components/SkillsSection'
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
           <div className={styles.panelLabel}>editor</div>
           <PersonalSection />
           <SummarySection />
+          <ExperienceSection />
+          <EducationSection />
           <SkillsSection />
         </div>
         <div className={styles.previewPanel}>

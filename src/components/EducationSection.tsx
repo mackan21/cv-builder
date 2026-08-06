@@ -1,0 +1,68 @@
+import { useCVStore } from '../store/cvStore'
+import formStyles from '../styles/form.module.css'
+import listStyles from '../styles/list.module.css'
+
+export function EducationSection() {
+  const education = useCVStore((state) => state.data.education)
+  const addEducation = useCVStore((state) => state.addEducation)
+  const updateEducation = useCVStore((state) => state.updateEducation)
+  const removeEducation = useCVStore((state) => state.removeEducation)
+
+  return (
+    <section className={formStyles.section}>
+      <h2 className={formStyles.sectionTitle}>Education</h2>
+      {education.map((item, index) => (
+        <div key={item.id} className={listStyles.entry}>
+          <div className={listStyles.entryHead}>
+            <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+            <button
+              type="button"
+              className={listStyles.removeButton}
+              onClick={() => removeEducation(item.id)}
+              aria-label="Remove this education entry"
+            >
+              Remove
+            </button>
+          </div>
+          <div className={formStyles.grid}>
+            <div className={formStyles.field}>
+              <label className={formStyles.label}>School</label>
+              <input
+                className={formStyles.input}
+                value={item.school}
+                onChange={(e) => updateEducation(item.id, { school: e.target.value })}
+              />
+            </div>
+            <div className={formStyles.field}>
+              <label className={formStyles.label}>Degree / programme</label>
+              <input
+                className={formStyles.input}
+                value={item.degree}
+                onChange={(e) => updateEducation(item.id, { degree: e.target.value })}
+              />
+            </div>
+            <div className={formStyles.field}>
+              <label className={formStyles.label}>Start</label>
+              <input
+                className={formStyles.input}
+                value={item.start}
+                onChange={(e) => updateEducation(item.id, { start: e.target.value })}
+              />
+            </div>
+            <div className={formStyles.field}>
+              <label className={formStyles.label}>End</label>
+              <input
+                className={formStyles.input}
+                value={item.end}
+                onChange={(e) => updateEducation(item.id, { end: e.target.value })}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+      <button type="button" className={listStyles.addButton} onClick={addEducation}>
+        + Add education
+      </button>
+    </section>
+  )
+}
