@@ -7,34 +7,34 @@ function makeId() {
 }
 
 const initialData: CVData = {
-  name: 'Your Name',
-  title: 'Your Title',
-  email: 'you@email.com',
-  phone: '+46 70 000 00 00',
-  location: 'City, Country',
-  linkedin: 'linkedin.com/in/yourname',
-  github: 'github.com/yourname',
-  summary: 'A short summary of who you are and what you do — two or three sentences is plenty.',
+  name: '',
+  title: '',
+  email: '',
+  phone: '',
+  location: '',
+  linkedin: '',
+  github: '',
+  summary: '',
   experience: [
     {
       id: makeId(),
-      role: 'Role Title',
-      company: 'Company Name',
-      start: '2024',
-      end: 'Present',
-      description: 'What you did and what changed because of it.',
+      role: '',
+      company: '',
+      start: '',
+      end: '',
+      description: '',
     },
   ],
   education: [
     {
       id: makeId(),
-      school: 'School Name',
-      degree: 'Degree or Programme',
-      start: '2021',
-      end: '2024',
+      school: '',
+      degree: '',
+      start: '',
+      end: '',
     },
   ],
-  skills: 'Skill one, skill two, skill three',
+  skills: '',
 }
 
 interface CVStore {

@@ -16,6 +16,7 @@ export function PersonalSection() {
           <input
             id="name"
             className={formStyles.input}
+            placeholder="Your Name"
             value={data.name}
             onChange={(e) => setField('name', e.target.value)}
           />
@@ -27,6 +28,7 @@ export function PersonalSection() {
           <input
             id="title"
             className={formStyles.input}
+            placeholder="Your Title"
             value={data.title}
             onChange={(e) => setField('title', e.target.value)}
           />
@@ -38,6 +40,7 @@ export function PersonalSection() {
           <input
             id="email"
             className={formStyles.input}
+            placeholder="you@email.com"
             value={data.email}
             onChange={(e) => setField('email', e.target.value)}
           />
@@ -49,6 +52,7 @@ export function PersonalSection() {
           <input
             id="phone"
             className={formStyles.input}
+            placeholder="+46 70 000 00 00"
             value={data.phone}
             onChange={(e) => setField('phone', e.target.value)}
           />
@@ -60,6 +64,7 @@ export function PersonalSection() {
           <input
             id="location"
             className={formStyles.input}
+            placeholder="City, Country"
             value={data.location}
             onChange={(e) => setField('location', e.target.value)}
           />
@@ -71,6 +76,7 @@ export function PersonalSection() {
           <input
             id="linkedin"
             className={formStyles.input}
+            placeholder="linkedin.com/in/yourname"
             value={data.linkedin}
             onChange={(e) => setField('linkedin', e.target.value)}
           />
@@ -82,6 +88,7 @@ export function PersonalSection() {
           <input
             id="github"
             className={formStyles.input}
+            placeholder="github.com/yourname"
             value={data.github}
             onChange={(e) => setField('github', e.target.value)}
           />

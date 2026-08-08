@@ -32,6 +32,7 @@ export function EducationSection() {
               <input
                 id={`school-${item.id}`}
                 className={formStyles.input}
+                placeholder="School Name"
                 value={item.school}
                 onChange={(e) => updateEducation(item.id, { school: e.target.value })}
               />
@@ -43,6 +44,7 @@ export function EducationSection() {
               <input
                 id={`degree-${item.id}`}
                 className={formStyles.input}
+                placeholder="Degree or Programme"
                 value={item.degree}
                 onChange={(e) => updateEducation(item.id, { degree: e.target.value })}
               />
@@ -54,6 +56,7 @@ export function EducationSection() {
               <input
                 id={`edu-start-${item.id}`}
                 className={formStyles.input}
+                placeholder="2021"
                 value={item.start}
                 onChange={(e) => updateEducation(item.id, { start: e.target.value })}
               />
@@ -65,6 +68,7 @@ export function EducationSection() {
               <input
                 id={`edu-end-${item.id}`}
                 className={formStyles.input}
+                placeholder="2024"
                 value={item.end}
                 onChange={(e) => updateEducation(item.id, { end: e.target.value })}
               />

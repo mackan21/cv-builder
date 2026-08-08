@@ -15,6 +15,7 @@ export function SkillsSection() {
         <input
           id="skills"
           className={formStyles.input}
+          placeholder="Skill one, skill two, skill three"
           value={skills}
           onChange={(e) => setField('skills', e.target.value)}
         />

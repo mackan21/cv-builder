@@ -32,6 +32,7 @@ export function ExperienceSection() {
               <input
                 id={`role-${item.id}`}
                 className={formStyles.input}
+                placeholder="Role Title"
                 value={item.role}
                 onChange={(e) => updateExperience(item.id, { role: e.target.value })}
               />
@@ -43,6 +44,7 @@ export function ExperienceSection() {
               <input
                 id={`company-${item.id}`}
                 className={formStyles.input}
+                placeholder="Company Name"
                 value={item.company}
                 onChange={(e) => updateExperience(item.id, { company: e.target.value })}
               />
@@ -54,6 +56,7 @@ export function ExperienceSection() {
               <input
                 id={`exp-start-${item.id}`}
                 className={formStyles.input}
+                placeholder="2024"
                 value={item.start}
                 onChange={(e) => updateExperience(item.id, { start: e.target.value })}
               />
@@ -65,6 +68,7 @@ export function ExperienceSection() {
               <input
                 id={`exp-end-${item.id}`}
                 className={formStyles.input}
+                placeholder="Present"
                 value={item.end}
                 onChange={(e) => updateExperience(item.id, { end: e.target.value })}
               />
@@ -77,6 +81,7 @@ export function ExperienceSection() {
             <textarea
               id={`description-${item.id}`}
               className={formStyles.textarea}
+              placeholder="What you did and what changed because of it."
               value={item.description}
               onChange={(e) => updateExperience(item.id, { description: e.target.value })}
               rows={4}
