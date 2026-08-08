@@ -81,18 +81,6 @@ export function PersonalSection() {
             onChange={(e) => setField('linkedin', e.target.value)}
           />
         </div>
-        <div className={formStyles.field}>
-          <label className={formStyles.label} htmlFor="github">
-            GitHub
-          </label>
-          <input
-            id="github"
-            className={formStyles.input}
-            placeholder="github.com/yourname"
-            value={data.github}
-            onChange={(e) => setField('github', e.target.value)}
-          />
-        </div>
       </div>
     </section>
   )

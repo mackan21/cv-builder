@@ -17,7 +17,15 @@ export function ResumePage() {
           <h1 className={styles.name}>{data.name || 'Your Name'}</h1>
           <p className={styles.title}>{data.title}</p>
           <p className={styles.contact}>
-            {[data.email, data.phone, data.location, data.linkedin, data.github].filter(Boolean).join('  ·  ')}
+            {[
+              data.email,
+              data.phone,
+              data.location,
+              data.linkedin,
+              ...data.links.filter((link) => link.url).map((link) => (link.label ? `${link.label}: ${link.url}` : link.url)),
+            ]
+              .filter(Boolean)
+              .join('  ·  ')}
           </p>
         </header>
 

@@ -1,5 +1,6 @@
 import styles from './App.module.css'
 import { PersonalSection } from './components/PersonalSection'
+import { LinksSection } from './components/LinksSection'
 import { SummarySection } from './components/SummarySection'
 import { ExperienceSection } from './components/ExperienceSection'
 import { EducationSection } from './components/EducationSection'
@@ -47,6 +48,7 @@ function App() {
             </button>
           </div>
           <PersonalSection />
+          <LinksSection />
           <SummarySection />
           <ExperienceSection />
           <EducationSection />

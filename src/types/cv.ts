@@ -15,6 +15,12 @@ export interface Education {
   end: string
 }
 
+export interface Link {
+  id: string
+  label: string
+  url: string
+}
+
 export interface CVData {
   name: string
   title: string
@@ -22,7 +28,7 @@ export interface CVData {
   phone: string
   location: string
   linkedin: string
-  github: string
+  links: Link[]
   summary: string
   experience: Experience[]
   education: Education[]
