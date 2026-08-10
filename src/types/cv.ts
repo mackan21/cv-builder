@@ -2,6 +2,7 @@ export interface Experience {
   id: string
   role: string
   company: string
+  location: string
   start: string
   end: string
   description: string
@@ -21,6 +22,12 @@ export interface Link {
   url: string
 }
 
+export interface SkillGroup {
+  id: string
+  label: string
+  items: string
+}
+
 export interface CVData {
   name: string
   title: string
@@ -32,5 +39,5 @@ export interface CVData {
   summary: string
   experience: Experience[]
   education: Education[]
-  skills: string
+  skillGroups: SkillGroup[]
 }

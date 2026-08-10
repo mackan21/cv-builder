@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { CVData, Education, Experience, Link } from '../types/cv'
+import type { CVData, Education, Experience, Link, SkillGroup } from '../types/cv'
 
 function makeId() {
   return Math.random().toString(36).slice(2, 10)
@@ -20,6 +20,7 @@ const initialData: CVData = {
       id: makeId(),
       role: '',
       company: '',
+      location: '',
       start: '',
       end: '',
       description: '',
@@ -34,7 +35,11 @@ const initialData: CVData = {
       end: '',
     },
   ],
-  skills: '',
+  skillGroups: [
+    { id: makeId(), label: 'Frontend', items: '' },
+    { id: makeId(), label: 'Backend', items: '' },
+    { id: makeId(), label: 'Verktyg', items: '' },
+  ],
 }
 
 interface CVStore {
@@ -49,6 +54,9 @@ interface CVStore {
   addLink: () => void
   updateLink: (id: string, patch: Partial<Link>) => void
   removeLink: (id: string) => void
+  addSkillGroup: () => void
+  updateSkillGroup: (id: string, patch: Partial<SkillGroup>) => void
+  removeSkillGroup: (id: string) => void
   reset: () => void
 }
 
@@ -63,7 +71,7 @@ export const useCVStore = create<CVStore>()(
             ...state.data,
             experience: [
               ...state.data.experience,
-              { id: makeId(), role: '', company: '', start: '', end: '', description: '' },
+              { id: makeId(), role: '', company: '', location: '', start: '', end: '', description: '' },
             ],
           },
         })),
@@ -111,8 +119,30 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           data: { ...state.data, links: state.data.links.filter((item) => item.id !== id) },
         })),
+      addSkillGroup: () =>
+        set((state) => ({
+          data: { ...state.data, skillGroups: [...state.data.skillGroups, { id: makeId(), label: '', items: '' }] },
+        })),
+      updateSkillGroup: (id, patch) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            skillGroups: state.data.skillGroups.map((item) => (item.id === id ? { ...item, ...patch } : item)),
+          },
+        })),
+      removeSkillGroup: (id) =>
+        set((state) => ({
+          data: { ...state.data, skillGroups: state.data.skillGroups.filter((item) => item.id !== id) },
+        })),
       reset: () => set({ data: initialData }),
     }),
-    { name: 'cv-forge-data' },
+    {
+      name: 'cv-forge-data',
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState as Partial<CVStore>),
+        data: { ...currentState.data, ...(persistedState as Partial<CVStore>)?.data },
+      }),
+    },
   ),
 )

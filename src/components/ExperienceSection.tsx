@@ -1,6 +1,7 @@
 import { useCVStore } from '../store/cvStore'
 import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
+import { normalizePastedLines } from '../utils/text'
 
 export function ExperienceSection() {
   const experience = useCVStore((state) => state.data.experience)
@@ -50,6 +51,18 @@ export function ExperienceSection() {
               />
             </div>
             <div className={formStyles.field}>
+              <label className={formStyles.label} htmlFor={`location-${item.id}`}>
+                Location
+              </label>
+              <input
+                id={`location-${item.id}`}
+                className={formStyles.input}
+                placeholder="City"
+                value={item.location}
+                onChange={(e) => updateExperience(item.id, { location: e.target.value })}
+              />
+            </div>
+            <div className={formStyles.field}>
               <label className={formStyles.label} htmlFor={`exp-start-${item.id}`}>
                 Start
               </label>
@@ -84,6 +97,15 @@ export function ExperienceSection() {
               placeholder="What you did and what changed because of it."
               value={item.description}
               onChange={(e) => updateExperience(item.id, { description: e.target.value })}
+              onPaste={(e) => {
+                e.preventDefault()
+                const target = e.currentTarget
+                const pasted = normalizePastedLines(e.clipboardData.getData('text'))
+                const start = target.selectionStart
+                const end = target.selectionEnd
+                const newValue = item.description.slice(0, start) + pasted + item.description.slice(end)
+                updateExperience(item.id, { description: newValue })
+              }}
               rows={4}
             />
           </div>

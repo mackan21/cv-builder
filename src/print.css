@@ -24,7 +24,7 @@
 
   .print-page {
     box-shadow: none !important;
-    width: 680px !important;
+    width: 210mm !important;
     max-width: 100% !important;
     margin: 0 auto !important;
     min-height: 0 !important;

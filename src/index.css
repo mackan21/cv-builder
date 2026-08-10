@@ -18,7 +18,7 @@
 
   /* The page itself must look like a real, printable document */
   --page-bg: #ffffff;
-  --page-ink: #14161a;
+  --page-ink: #000000;
   --page-ink-muted: #52555c;
   --page-rule: #dcdfe3;
 
