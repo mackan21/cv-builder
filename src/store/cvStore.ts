@@ -6,6 +6,34 @@ function makeId() {
   return Math.random().toString(36).slice(2, 10)
 }
 
+// A corrupted or blocked localStorage record must never crash the app at
+// startup — any read/write/parse failure here just falls back to a fresh CV
+// instead of a white screen with no recovery path.
+const safeStorage = {
+  getItem: (name: string) => {
+    try {
+      const value = localStorage.getItem(name)
+      return value ? JSON.parse(value) : null
+    } catch {
+      return null
+    }
+  },
+  setItem: (name: string, value: unknown) => {
+    try {
+      localStorage.setItem(name, JSON.stringify(value))
+    } catch {
+      // Storage full, disabled, or blocked — silently skip persisting this write.
+    }
+  },
+  removeItem: (name: string) => {
+    try {
+      localStorage.removeItem(name)
+    } catch {
+      // ignore
+    }
+  },
+}
+
 const initialData: CVData = {
   name: '',
   title: '',
@@ -175,6 +203,7 @@ export const useCVStore = create<CVStore>()(
     }),
     {
       name: 'cv-forge-data',
+      storage: safeStorage,
       merge: (persistedState, currentState) => ({
         ...currentState,
         ...(persistedState as Partial<CVStore>),
