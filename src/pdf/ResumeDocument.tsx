@@ -9,7 +9,7 @@ const CM = 28.3465 // pt per cm, PDF's native unit
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 1.5 * CM,
+    paddingTop: 1 * CM,
     paddingBottom: 2 * CM,
     paddingLeft: 2 * CM,
     paddingRight: 2 * CM,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Carlito',
     fontSize: 10,
     color: '#000000',
-    lineHeight: 1.6,
+    lineHeight: 1.35,
   },
   skillRow: {
     flexDirection: 'row',
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Carlito',
     fontSize: 10,
     color: '#000000',
-    lineHeight: 1.55,
+    lineHeight: 1.3,
   },
 })
 

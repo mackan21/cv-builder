@@ -47,7 +47,7 @@
   background: var(--page-bg);
   color: var(--page-ink);
   font-family: Carlito, 'Segoe UI', sans-serif;
-  padding: 1.5cm 2cm 2cm;
+  padding: 1cm 2cm 2cm;
   box-shadow:
     0 1px 0 1px var(--border),
     0 30px 60px -20px oklch(0 0 0 / 0.55);
@@ -132,7 +132,7 @@
   font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   color: #000;
-  line-height: 1.6;
+  line-height: 1.35;
 }
 
 .sectionTitle {
@@ -200,7 +200,7 @@
   list-style: none;
   font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
-  line-height: 1.55;
+  line-height: 1.3;
   color: #000;
 }
 
