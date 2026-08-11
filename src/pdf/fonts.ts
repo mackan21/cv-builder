@@ -7,6 +7,23 @@ import carlitoItalic from '@fontsource/carlito/files/carlito-latin-400-italic.wo
 
 let registered = false
 
+// react-pdf's default hyphenation callback returns a word unsplit
+// (`(word) => [word]`), so a long unbroken token with no spaces (a bare URL,
+// a long email) has no valid line-break point and can run off the page edge
+// instead of wrapping. Short/normal words are left alone; only tokens past
+// a length no real line could fit get fallback break points.
+const MAX_UNSPLIT_WORD_LENGTH = 20
+const HYPHENATION_CHUNK_SIZE = 10
+
+function hyphenationCallback(word: string): string[] {
+  if (word.length <= MAX_UNSPLIT_WORD_LENGTH) return [word]
+  const chunks: string[] = []
+  for (let i = 0; i < word.length; i += HYPHENATION_CHUNK_SIZE) {
+    chunks.push(word.slice(i, i + HYPHENATION_CHUNK_SIZE))
+  }
+  return chunks
+}
+
 // Metric-compatible open-source stand-ins for the Microsoft fonts the resume
 // template is styled after (Times New Roman, Arial Nova, Calibri). Same glyph
 // widths, so layout matches exactly, but freely licensed for a public repo.
@@ -42,4 +59,6 @@ export function registerPdfFonts() {
       { src: carlitoItalic, fontWeight: 400, fontStyle: 'italic' },
     ],
   })
+
+  Font.registerHyphenationCallback(hyphenationCallback)
 }
