@@ -6,6 +6,7 @@ import { LinksSection } from './components/LinksSection'
 import { SummarySection } from './components/SummarySection'
 import { ExperienceSection } from './components/ExperienceSection'
 import { EducationSection } from './components/EducationSection'
+import { CertificationsSection } from './components/CertificationsSection'
 import { SkillsSection } from './components/SkillsSection'
 import { ExportDialog } from './components/ExportDialog'
 import { ConfirmDialog } from './components/ConfirmDialog'
@@ -14,7 +15,7 @@ import { ResumeDocument } from './pdf/ResumeDocument'
 import { registerPdfFonts } from './pdf/fonts'
 import { useCVStore } from './store/cvStore'
 import { SECTION_ORDER, type SectionId } from './constants/sections'
-import { hasExperienceContent, hasEducationContent } from './utils/cv'
+import { hasExperienceContent, hasEducationContent, hasCertificationContent } from './utils/cv'
 import type { CVData } from './types/cv'
 
 registerPdfFonts()
@@ -26,6 +27,7 @@ const SECTION_META: Record<SectionId, { label: string; Component: React.Componen
   skills: { label: 'Skills', Component: SkillsSection },
   experience: { label: 'Experience', Component: ExperienceSection },
   education: { label: 'Education', Component: EducationSection },
+  certifications: { label: 'Certifications', Component: CertificationsSection },
 }
 
 const TABS = SECTION_ORDER.map((id) => ({ id, ...SECTION_META[id] }))
@@ -54,6 +56,7 @@ function furthestFilledIndex(data: CVData): number {
     ...(hasSkills ? (['skills'] as const) : []),
     ...(data.experience.some(hasExperienceContent) ? (['experience'] as const) : []),
     ...(data.education.some(hasEducationContent) ? (['education'] as const) : []),
+    ...(data.certifications.some(hasCertificationContent) ? (['certifications'] as const) : []),
   ]
   return filled.reduce((max, id) => Math.max(max, SECTION_ORDER.indexOf(id)), 0)
 }

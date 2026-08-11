@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { CVData, Education, Experience, Headings, Link, SkillGroup } from '../types/cv'
+import type { Certification, CVData, Education, Experience, Headings, Link, SkillGroup } from '../types/cv'
 
 function makeId() {
   return Math.random().toString(36).slice(2, 10)
@@ -40,11 +40,13 @@ const initialData: CVData = {
     { id: makeId(), label: 'Technical Skills', items: '' },
     { id: makeId(), label: 'Soft Skills', items: '' },
   ],
+  certifications: [],
   headings: {
     summary: 'Professional Summary',
     skills: 'Skills',
     experience: 'Experience',
     education: 'Education',
+    certifications: 'Certifications',
   },
 }
 
@@ -63,6 +65,9 @@ interface CVStore {
   addSkillGroup: () => void
   updateSkillGroup: (id: string, patch: Partial<SkillGroup>) => void
   removeSkillGroup: (id: string) => void
+  addCertification: () => void
+  updateCertification: (id: string, patch: Partial<Certification>) => void
+  removeCertification: (id: string) => void
   updateHeading: (key: keyof Headings, value: string) => void
   reset: () => void
 }
@@ -143,6 +148,24 @@ export const useCVStore = create<CVStore>()(
       removeSkillGroup: (id) =>
         set((state) => ({
           data: { ...state.data, skillGroups: state.data.skillGroups.filter((item) => item.id !== id) },
+        })),
+      addCertification: () =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            certifications: [...state.data.certifications, { id: makeId(), name: '', issuer: '', date: '', url: '' }],
+          },
+        })),
+      updateCertification: (id, patch) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            certifications: state.data.certifications.map((item) => (item.id === id ? { ...item, ...patch } : item)),
+          },
+        })),
+      removeCertification: (id) =>
+        set((state) => ({
+          data: { ...state.data, certifications: state.data.certifications.filter((item) => item.id !== id) },
         })),
       updateHeading: (key, value) =>
         set((state) => ({

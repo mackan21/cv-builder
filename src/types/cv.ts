@@ -23,6 +23,14 @@ export interface Link {
   url: string
 }
 
+export interface Certification {
+  id: string
+  name: string
+  issuer: string
+  date: string
+  url: string
+}
+
 export interface SkillGroup {
   id: string
   label: string
@@ -34,6 +42,7 @@ export interface Headings {
   skills: string
   experience: string
   education: string
+  certifications: string
 }
 
 export interface CVData {
@@ -48,5 +57,6 @@ export interface CVData {
   experience: Experience[]
   education: Education[]
   skillGroups: SkillGroup[]
+  certifications: Certification[]
   headings: Headings
 }

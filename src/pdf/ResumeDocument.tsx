@@ -1,6 +1,6 @@
 import { Document, Page, View, Text, Link, StyleSheet } from '@react-pdf/renderer'
 import type { CVData } from '../types/cv'
-import { hasExperienceContent, hasEducationContent } from '../utils/cv'
+import { hasExperienceContent, hasEducationContent, hasCertificationContent } from '../utils/cv'
 
 function normalizeUrl(url: string) {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`
@@ -187,6 +187,7 @@ function ContactLine({ items, spaced }: { items: ContactItem[]; spaced?: boolean
 
 type ExperienceItem = CVData['experience'][number]
 type EducationItem = CVData['education'][number]
+type CertificationItem = CVData['certifications'][number]
 
 function ExperienceEntry({ item }: { item: ExperienceItem }) {
   const bullets = item.description
@@ -234,6 +235,26 @@ function EducationEntry({ item }: { item: EducationItem }) {
   )
 }
 
+function CertificationEntry({ item }: { item: CertificationItem }) {
+  return (
+    <View style={styles.entry} wrap={false}>
+      <View style={styles.entryHead}>
+        <Text style={styles.entryRole}>
+          {item.url ? (
+            <Link src={normalizeUrl(item.url)} style={[styles.entryRoleTitle, styles.link]}>
+              {item.name}
+            </Link>
+          ) : (
+            <Text style={styles.entryRoleTitle}>{item.name}</Text>
+          )}
+          {item.issuer && <Text style={styles.entryCompany}>, {item.issuer}</Text>}
+        </Text>
+        <Text style={styles.entryDates}>{item.date}</Text>
+      </View>
+    </View>
+  )
+}
+
 export function ResumeDocument({ data }: { data: CVData }) {
   const skillGroups = data.skillGroups
     .map((group) => ({
@@ -263,6 +284,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
 
   const experience = data.experience.filter(hasExperienceContent)
   const education = data.education.filter(hasEducationContent)
+  const certifications = data.certifications.filter(hasCertificationContent)
   const hasHeaderContent = Boolean(data.name || data.title || contactLineItems.length > 0 || linkLineItems.length > 0)
   const skillLabelWidth = measureSkillLabelWidth(skillGroups.map((group) => group.label))
 
@@ -324,6 +346,19 @@ export function ResumeDocument({ data }: { data: CVData }) {
             </View>
             {education.slice(1).map((item) => (
               <EducationEntry key={item.id} item={item} />
+            ))}
+            <View style={styles.rule} />
+          </View>
+        )}
+
+        {certifications.length > 0 && (
+          <View style={styles.section}>
+            <View wrap={false}>
+              <Text style={styles.sectionTitle}>{data.headings.certifications || 'Certifications'}</Text>
+              <CertificationEntry item={certifications[0]} />
+            </View>
+            {certifications.slice(1).map((item) => (
+              <CertificationEntry key={item.id} item={item} />
             ))}
           </View>
         )}

@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { useCVStore } from '../store/cvStore'
 import { usePageCount } from '../pdf/usePageCount'
-import { hasExperienceContent, hasEducationContent } from '../utils/cv'
+import { hasExperienceContent, hasEducationContent, hasCertificationContent } from '../utils/cv'
 import { SECTION_ORDER, type SectionId } from '../constants/sections'
 import styles from './ResumePage.module.css'
 
@@ -45,6 +45,7 @@ export function ResumePage({ furthestSection }: { furthestSection: SectionId }) 
 
   const experience = data.experience.filter(hasExperienceContent)
   const education = data.education.filter(hasEducationContent)
+  const certifications = data.certifications.filter(hasCertificationContent)
   const hasHeaderContent = Boolean(data.name || data.title || contactLineItems.length > 0 || linkLineItems.length > 0)
 
   function renderItems(items: ContactItem[]) {
@@ -153,6 +154,32 @@ export function ResumePage({ furthestSection }: { furthestSection: SectionId }) 
                     {item.start}
                     {item.end ? ` – ${item.end}` : ''}
                   </span>
+                </div>
+              </div>
+            ))}
+            {isPastSection('education') && <hr className={styles.rule} />}
+          </section>
+        )}
+
+        {certifications.length > 0 && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{data.headings.certifications || 'Certifications'}</h2>
+            {certifications.map((item) => (
+              <div key={item.id} className={styles.entry}>
+                <div className={styles.entryHead}>
+                  <span className={styles.entryRole}>
+                    <span className={styles.entryRoleTitle}>
+                      {item.url ? (
+                        <a href={normalizeUrl(item.url)} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                          {item.name}
+                        </a>
+                      ) : (
+                        item.name
+                      )}
+                    </span>
+                    {item.issuer && <span className={styles.entryCompany}>, {item.issuer}</span>}
+                  </span>
+                  <span className={styles.entryDates}>{item.date}</span>
                 </div>
               </div>
             ))}
