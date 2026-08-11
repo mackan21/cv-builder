@@ -11,6 +11,7 @@ export function CertificationsSection() {
   const updateCertification = useCVStore((state) => state.updateCertification)
   const removeCertification = useCVStore((state) => state.removeCertification)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const moveItem = useCVStore((state) => state.moveItem)
   const removeConfirm = useConfirmRemove(removeCertification)
 
   return (
@@ -31,7 +32,27 @@ export function CertificationsSection() {
       {certifications.map((item, index) => (
         <div key={item.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>
-            <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+            <div className={listStyles.entryHeadLeft}>
+              <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('certifications', item.id, 'up')}
+                disabled={index === 0}
+                aria-label="Move this certification up"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('certifications', item.id, 'down')}
+                disabled={index === certifications.length - 1}
+                aria-label="Move this certification down"
+              >
+                ↓
+              </button>
+            </div>
             <button
               type="button"
               className={listStyles.removeButton}

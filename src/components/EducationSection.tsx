@@ -11,6 +11,7 @@ export function EducationSection() {
   const updateEducation = useCVStore((state) => state.updateEducation)
   const removeEducation = useCVStore((state) => state.removeEducation)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const moveItem = useCVStore((state) => state.moveItem)
   const removeConfirm = useConfirmRemove(removeEducation)
 
   return (
@@ -31,7 +32,27 @@ export function EducationSection() {
       {education.map((item, index) => (
         <div key={item.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>
-            <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+            <div className={listStyles.entryHeadLeft}>
+              <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('education', item.id, 'up')}
+                disabled={index === 0}
+                aria-label="Move this education entry up"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('education', item.id, 'down')}
+                disabled={index === education.length - 1}
+                aria-label="Move this education entry down"
+              >
+                ↓
+              </button>
+            </div>
             <button
               type="button"
               className={listStyles.removeButton}

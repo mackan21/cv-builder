@@ -13,6 +13,7 @@ export function ExperienceSection() {
   const updateExperience = useCVStore((state) => state.updateExperience)
   const removeExperience = useCVStore((state) => state.removeExperience)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const moveItem = useCVStore((state) => state.moveItem)
   const removeConfirm = useConfirmRemove(removeExperience)
 
   return (
@@ -33,7 +34,27 @@ export function ExperienceSection() {
       {experience.map((item, index) => (
         <div key={item.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>
-            <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+            <div className={listStyles.entryHeadLeft}>
+              <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('experience', item.id, 'up')}
+                disabled={index === 0}
+                aria-label="Move this experience up"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('experience', item.id, 'down')}
+                disabled={index === experience.length - 1}
+                aria-label="Move this experience down"
+              >
+                ↓
+              </button>
+            </div>
             <button
               type="button"
               className={listStyles.removeButton}

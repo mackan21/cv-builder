@@ -78,9 +78,12 @@ const initialData: CVData = {
   },
 }
 
+type ReorderableField = 'links' | 'experience' | 'education' | 'skillGroups' | 'certifications'
+
 interface CVStore {
   data: CVData
   setField: <K extends keyof CVData>(key: K, value: CVData[K]) => void
+  moveItem: (field: ReorderableField, id: string, direction: 'up' | 'down') => void
   addExperience: () => void
   updateExperience: (id: string, patch: Partial<Experience>) => void
   removeExperience: (id: string) => void
@@ -105,6 +108,16 @@ export const useCVStore = create<CVStore>()(
     (set) => ({
       data: initialData,
       setField: (key, value) => set((state) => ({ data: { ...state.data, [key]: value } })),
+      moveItem: (field, id, direction) =>
+        set((state) => {
+          const list = state.data[field]
+          const index = list.findIndex((item) => item.id === id)
+          const swapWith = direction === 'up' ? index - 1 : index + 1
+          if (index === -1 || swapWith < 0 || swapWith >= list.length) return state
+          const next = [...list] as typeof list
+          ;[next[index], next[swapWith]] = [next[swapWith], next[index]]
+          return { data: { ...state.data, [field]: next } }
+        }),
       addExperience: () =>
         set((state) => ({
           data: {

@@ -9,6 +9,7 @@ export function LinksSection() {
   const addLink = useCVStore((state) => state.addLink)
   const updateLink = useCVStore((state) => state.updateLink)
   const removeLink = useCVStore((state) => state.removeLink)
+  const moveItem = useCVStore((state) => state.moveItem)
   const removeConfirm = useConfirmRemove(removeLink)
 
   return (
@@ -17,7 +18,27 @@ export function LinksSection() {
       {links.map((item, index) => (
         <div key={item.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>
-            <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+            <div className={listStyles.entryHeadLeft}>
+              <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('links', item.id, 'up')}
+                disabled={index === 0}
+                aria-label="Move this link up"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('links', item.id, 'down')}
+                disabled={index === links.length - 1}
+                aria-label="Move this link down"
+              >
+                ↓
+              </button>
+            </div>
             <button
               type="button"
               className={listStyles.removeButton}

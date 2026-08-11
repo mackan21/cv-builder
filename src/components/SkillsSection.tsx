@@ -12,6 +12,7 @@ export function SkillsSection() {
   const updateSkillGroup = useCVStore((state) => state.updateSkillGroup)
   const removeSkillGroup = useCVStore((state) => state.removeSkillGroup)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const moveItem = useCVStore((state) => state.moveItem)
   const removeConfirm = useConfirmRemove(removeSkillGroup)
 
   return (
@@ -32,7 +33,27 @@ export function SkillsSection() {
       {skillGroups.map((group, index) => (
         <div key={group.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>
-            <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+            <div className={listStyles.entryHeadLeft}>
+              <span className={listStyles.entryIndex}>{String(index + 1).padStart(2, '0')}</span>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('skillGroups', group.id, 'up')}
+                disabled={index === 0}
+                aria-label="Move this skill group up"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={listStyles.moveButton}
+                onClick={() => moveItem('skillGroups', group.id, 'down')}
+                disabled={index === skillGroups.length - 1}
+                aria-label="Move this skill group down"
+              >
+                ↓
+              </button>
+            </div>
             <button
               type="button"
               className={listStyles.removeButton}

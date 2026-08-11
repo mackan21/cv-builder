@@ -19,6 +19,32 @@
   color: var(--ink-faint);
 }
 
+.entryHeadLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.moveButton {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--ink-faint);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.moveButton:hover:not(:disabled) {
+  color: var(--accent);
+}
+
+.moveButton:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
 .removeButton {
   background: none;
   border: none;
