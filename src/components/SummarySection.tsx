@@ -28,7 +28,7 @@ export function SummarySection() {
           placeholder="A short summary of who you are and what you do — two or three sentences is plenty."
           value={summary}
           onChange={(e) => setField('summary', e.target.value)}
-          rows={4}
+          rows={14}
         />
       </div>
     </section>

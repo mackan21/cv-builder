@@ -14,6 +14,17 @@ import { useCVStore } from './store/cvStore'
 
 registerPdfFonts()
 
+const TABS = [
+  { id: 'personal', label: 'Personal', Component: PersonalSection },
+  { id: 'links', label: 'Links', Component: LinksSection },
+  { id: 'summary', label: 'Summary', Component: SummarySection },
+  { id: 'skills', label: 'Skills', Component: SkillsSection },
+  { id: 'experience', label: 'Experience', Component: ExperienceSection },
+  { id: 'education', label: 'Education', Component: EducationSection },
+] as const
+
+type TabId = (typeof TABS)[number]['id']
+
 function defaultFileName(name: string) {
   const slug = name
     .trim()
@@ -28,6 +39,8 @@ function App() {
   const data = useCVStore((state) => state.data)
   const reset = useCVStore((state) => state.reset)
   const [exporting, setExporting] = useState(false)
+  const [activeTab, setActiveTab] = useState<TabId>('personal')
+  const ActiveSection = TABS.find((tab) => tab.id === activeTab)?.Component ?? PersonalSection
 
   function handleReset() {
     if (window.confirm('Clear everything and start over?')) reset()
@@ -77,12 +90,21 @@ function App() {
               Reset
             </button>
           </div>
-          <PersonalSection />
-          <LinksSection />
-          <SummarySection />
-          <SkillsSection />
-          <ExperienceSection />
-          <EducationSection />
+          <nav className={styles.tabNav} aria-label="CV sections">
+            {TABS.map((tab, index) => (
+              <button
+                key={tab.id}
+                type="button"
+                className={tab.id === activeTab ? `${styles.tabButton} ${styles.tabButtonActive}` : styles.tabButton}
+                onClick={() => setActiveTab(tab.id)}
+                aria-current={tab.id === activeTab}
+              >
+                <span className={styles.tabIndex}>{String(index + 1).padStart(2, '0')}</span>
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+          <ActiveSection />
         </div>
         <div className={styles.previewPanel}>
           <div className={styles.panelLabel}>preview</div>

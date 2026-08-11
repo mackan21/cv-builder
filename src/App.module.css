@@ -129,6 +129,58 @@
   color: var(--accent);
 }
 
+.tabNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 8px 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.tabButton:hover {
+  color: var(--ink-muted);
+}
+
+.tabButtonActive,
+.tabButtonActive:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tabIndex {
+  color: var(--ink-faint);
+  font-size: 10.5px;
+}
+
+.tabButtonActive .tabIndex {
+  color: var(--accent-strong);
+}
+
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
