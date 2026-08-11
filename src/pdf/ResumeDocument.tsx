@@ -1,10 +1,7 @@
 import { Document, Page, View, Text, Link, StyleSheet } from '@react-pdf/renderer'
 import type { CVData } from '../types/cv'
 import { hasExperienceContent, hasEducationContent, hasCertificationContent } from '../utils/cv'
-
-function normalizeUrl(url: string) {
-  return /^https?:\/\//i.test(url) ? url : `https://${url}`
-}
+import { buildContactLines, normalizeUrl, type ContactItem } from '../utils/contact'
 
 // react-pdf has no CSS Grid, so the shared skill-label column width (matching
 // the HTML preview's grid-template-columns: max-content) is measured by hand
@@ -164,8 +161,6 @@ const styles = StyleSheet.create({
   },
 })
 
-type ContactItem = { key: string; text: string; href?: string }
-
 function ContactLine({ items, spaced }: { items: ContactItem[]; spaced?: boolean }) {
   return (
     <Text style={[styles.contactLine, spaced ? styles.contactLineSpaced : undefined]}>
@@ -276,26 +271,11 @@ export function ResumeDocument({ data }: { data: CVData }) {
     }))
     .filter((group) => group.itemList.length > 0)
 
-  const infoItems: ContactItem[] = [
-    ...(data.phone ? [{ key: 'phone', text: data.phone }] : []),
-    ...(data.email ? [{ key: 'email', text: data.email }] : []),
-    ...(data.location ? [{ key: 'location', text: data.location }] : []),
-  ]
-
-  const linkItems: ContactItem[] = [
-    ...(data.linkedin ? [{ key: 'linkedin', text: 'LinkedIn', href: normalizeUrl(data.linkedin) }] : []),
-    ...data.links
-      .filter((link) => link.url)
-      .map((link) => ({ key: link.id, text: link.label || link.url, href: normalizeUrl(link.url) })),
-  ]
-
-  const contactLineItems = linkItems.length <= 1 ? [...infoItems, ...linkItems] : infoItems
-  const linkLineItems = linkItems.length <= 1 ? [] : linkItems
+  const { contactLineItems, linkLineItems, hasHeaderContent } = buildContactLines(data)
 
   const experience = data.experience.filter(hasExperienceContent)
   const education = data.education.filter(hasEducationContent)
   const certifications = data.certifications.filter(hasCertificationContent)
-  const hasHeaderContent = Boolean(data.name || data.title || contactLineItems.length > 0 || linkLineItems.length > 0)
   const skillLabelWidth = measureSkillLabelWidth(skillGroups.map((group) => group.label))
 
   return (

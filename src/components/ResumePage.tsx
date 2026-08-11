@@ -2,12 +2,9 @@ import { Fragment } from 'react'
 import { useCVStore } from '../store/cvStore'
 import { usePageCount } from '../pdf/usePageCount'
 import { hasExperienceContent, hasEducationContent, hasCertificationContent } from '../utils/cv'
+import { buildContactLines, normalizeUrl, type ContactItem } from '../utils/contact'
 import { SECTION_ORDER, type SectionId } from '../constants/sections'
 import styles from './ResumePage.module.css'
-
-function normalizeUrl(url: string) {
-  return /^https?:\/\//i.test(url) ? url : `https://${url}`
-}
 
 export function ResumePage({ furthestSection }: { furthestSection: SectionId }) {
   const data = useCVStore((state) => state.data)
@@ -24,29 +21,11 @@ export function ResumePage({ furthestSection }: { furthestSection: SectionId }) 
     }))
     .filter((group) => group.itemList.length > 0)
 
-  type ContactItem = { key: string; text: string; href?: string }
-
-  const infoItems: ContactItem[] = [
-    ...(data.phone ? [{ key: 'phone', text: data.phone }] : []),
-    ...(data.email ? [{ key: 'email', text: data.email }] : []),
-    ...(data.location ? [{ key: 'location', text: data.location }] : []),
-  ]
-
-  const linkItems: ContactItem[] = [
-    ...(data.linkedin ? [{ key: 'linkedin', text: 'LinkedIn', href: normalizeUrl(data.linkedin) }] : []),
-    ...data.links
-      .filter((link) => link.url)
-      .map((link) => ({ key: link.id, text: link.label || link.url, href: normalizeUrl(link.url) })),
-  ]
-
-  // A single link stays on the contact line. Two or more move to their own line below.
-  const contactLineItems = linkItems.length <= 1 ? [...infoItems, ...linkItems] : infoItems
-  const linkLineItems = linkItems.length <= 1 ? [] : linkItems
+  const { contactLineItems, linkLineItems, hasHeaderContent } = buildContactLines(data)
 
   const experience = data.experience.filter(hasExperienceContent)
   const education = data.education.filter(hasEducationContent)
   const certifications = data.certifications.filter(hasCertificationContent)
-  const hasHeaderContent = Boolean(data.name || data.title || contactLineItems.length > 0 || linkLineItems.length > 0)
 
   function renderItems(items: ContactItem[]) {
     return items.map((item, idx) => (
