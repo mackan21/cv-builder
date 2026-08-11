@@ -189,13 +189,23 @@ type ExperienceItem = CVData['experience'][number]
 type EducationItem = CVData['education'][number]
 type CertificationItem = CVData['certifications'][number]
 
+// An entry with this much bullet text can't fit on a single page even on
+// its own, so locking it as one unbreakable unit (the usual safeguard
+// against orphaned headings/split entries) would clip it instead of
+// paginating. Past this length, let it wrap across pages like normal text.
+const MAX_UNBREAKABLE_DESCRIPTION_LENGTH = 1500
+
+function isEntryTooLongToLock(description: string) {
+  return description.length > MAX_UNBREAKABLE_DESCRIPTION_LENGTH
+}
+
 function ExperienceEntry({ item }: { item: ExperienceItem }) {
   const bullets = item.description
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
   return (
-    <View style={styles.entry} wrap={false}>
+    <View style={styles.entry} wrap={isEntryTooLongToLock(item.description)}>
       <View style={styles.entryHead}>
         <Text style={styles.entryRole}>
           <Text style={styles.entryRoleTitle}>{item.role}</Text>
@@ -326,8 +336,9 @@ export function ResumeDocument({ data }: { data: CVData }) {
         {experience.length > 0 && (
           <View style={styles.section}>
             {/* Wrapped with the first entry so the heading can never be
-                orphaned alone at the bottom of a page. */}
-            <View wrap={false}>
+                orphaned alone at the bottom of a page — unless that entry
+                is itself too long to fit on one page, see isEntryTooLongToLock. */}
+            <View wrap={isEntryTooLongToLock(experience[0].description)}>
               <Text style={styles.sectionTitle}>{data.headings.experience || 'Experience'}</Text>
               <ExperienceEntry item={experience[0]} />
             </View>
