@@ -12,6 +12,7 @@ export interface Education {
   id: string
   school: string
   degree: string
+  location: string
   start: string
   end: string
 }

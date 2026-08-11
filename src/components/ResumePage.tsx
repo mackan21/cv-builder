@@ -117,6 +117,7 @@ export function ResumePage() {
                 </div>
               )
             })}
+            <hr className={styles.rule} />
           </section>
         )}
 
@@ -127,8 +128,9 @@ export function ResumePage() {
               <div key={item.id} className={styles.entry}>
                 <div className={styles.entryHead}>
                   <span className={styles.entryRole}>
-                    {item.degree}
-                    {item.school ? `, ${item.school}` : ''}
+                    <span className={styles.entryRoleTitle}>{item.degree}</span>
+                    {item.school && <span className={styles.entryCompany}>, {item.school}</span>}
+                    {item.location && <span className={styles.entryLocation}>, {item.location}</span>}
                   </span>
                   <span className={styles.entryDates}>
                     {item.start}

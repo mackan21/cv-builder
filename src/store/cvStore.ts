@@ -31,6 +31,7 @@ const initialData: CVData = {
       id: makeId(),
       school: '',
       degree: '',
+      location: '',
       start: '',
       end: '',
     },
@@ -90,7 +91,10 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           data: {
             ...state.data,
-            education: [...state.data.education, { id: makeId(), school: '', degree: '', start: '', end: '' }],
+            education: [
+              ...state.data.education,
+              { id: makeId(), school: '', degree: '', location: '', start: '', end: '' },
+            ],
           },
         })),
       updateEducation: (id, patch) =>

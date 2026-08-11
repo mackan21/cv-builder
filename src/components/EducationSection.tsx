@@ -50,6 +50,18 @@ export function EducationSection() {
               />
             </div>
             <div className={formStyles.field}>
+              <label className={formStyles.label} htmlFor={`edu-location-${item.id}`}>
+                Location
+              </label>
+              <input
+                id={`edu-location-${item.id}`}
+                className={formStyles.input}
+                placeholder="City"
+                value={item.location}
+                onChange={(e) => updateEducation(item.id, { location: e.target.value })}
+              />
+            </div>
+            <div className={formStyles.field}>
               <label className={formStyles.label} htmlFor={`edu-start-${item.id}`}>
                 Start
               </label>
