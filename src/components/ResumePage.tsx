@@ -56,7 +56,7 @@ export function ResumePage() {
   return (
     <>
       {pageCount > 1 && (
-        <div className={styles.pageBadge}>{pageCount} pages — will print across multiple pages</div>
+        <div className={styles.pageBadge}>⚠ Will export as {pageCount} pages</div>
       )}
       <div className={styles.wrapper}>
         <div className={styles.ruler} aria-hidden="true"></div>
