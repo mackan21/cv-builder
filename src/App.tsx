@@ -117,7 +117,7 @@ function App() {
           <span className={styles.mark} aria-hidden="true">
             ▦
           </span>
-          <span className={styles.wordmark}>CV Forge</span>
+          <span className={styles.wordmark}>Formolio</span>
         </div>
         <div className={styles.headerRight}>
           <button type="button" className={styles.exportButton} onClick={openExportDialog} disabled={exporting}>

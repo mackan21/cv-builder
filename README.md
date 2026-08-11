@@ -1,9 +1,9 @@
-# CV Forge
+# Formolio
 
 Build a resume section by section, watch it take shape on a real page as you type,
 and export it straight to a print-ready PDF.
 
-![CV Forge screenshot](docs/screenshot.png)
+![Formolio screenshot](docs/screenshot.png)
 
 ## Why
 
