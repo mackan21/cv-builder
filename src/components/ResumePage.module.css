@@ -47,7 +47,7 @@
   background: var(--page-bg);
   color: var(--page-ink);
   font-family: Carlito, 'Segoe UI', sans-serif;
-  padding: 2cm;
+  padding: 1.5cm 2cm 2cm;
   box-shadow:
     0 1px 0 1px var(--border),
     0 30px 60px -20px oklch(0 0 0 / 0.55);
@@ -101,10 +101,6 @@
 }
 
 .section {
-  margin-bottom: 22px;
-}
-
-.section:last-child {
   margin-bottom: 0;
 }
 

@@ -9,7 +9,10 @@ const CM = 28.3465 // pt per cm, PDF's native unit
 
 const styles = StyleSheet.create({
   page: {
-    padding: 2 * CM,
+    paddingTop: 1.5 * CM,
+    paddingBottom: 2 * CM,
+    paddingLeft: 2 * CM,
+    paddingRight: 2 * CM,
     fontFamily: 'Carlito',
     fontSize: 10,
     color: '#000000',
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     textDecoration: 'underline',
   },
   section: {
-    marginBottom: 22,
+    marginBottom: 0,
   },
   sectionTitle: {
     fontFamily: 'Arimo',

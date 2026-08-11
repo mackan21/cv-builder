@@ -14,6 +14,16 @@ import { useCVStore } from './store/cvStore'
 
 registerPdfFonts()
 
+function defaultFileName(name: string) {
+  const slug = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .join('-')
+    .toLowerCase()
+  return `${slug || 'resume'}-cv.pdf`
+}
+
 function App() {
   const data = useCVStore((state) => state.data)
   const reset = useCVStore((state) => state.reset)
@@ -24,13 +34,16 @@ function App() {
   }
 
   async function handleExport() {
+    const fileName = window.prompt('Save PDF as:', defaultFileName(data.name))
+    if (!fileName) return
+
     setExporting(true)
     try {
       const blob = await pdf(<ResumeDocument data={data} />).toBlob()
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `${(data.name || 'resume').trim().replace(/\s+/g, '_')}.pdf`
+      link.download = fileName.toLowerCase().endsWith('.pdf') ? fileName : `${fileName}.pdf`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
