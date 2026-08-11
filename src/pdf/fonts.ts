@@ -37,6 +37,22 @@ function hyphenationCallback(word: string): string[] {
 // substitution or fix the ToUnicode mapping (checked font/layout/pdfkit
 // packages directly, see git history 2026-08-11). Would require patching
 // their bundled fontkit fork, not worth the fragility.
+//
+// Known limitation: only the -latin glyph subset of each font is registered
+// here, while the HTML preview (see main.tsx) loads the full @fontsource
+// CSS, which covers latin-ext/cyrillic/greek/vietnamese too and lets the
+// browser pick the right file per character automatically via unicode-range.
+// react-pdf's Font.register has no equivalent, it maps exactly one font file
+// per family+weight, so a name or summary using Cyrillic, Greek, or
+// Vietnamese characters can render correctly in the live preview but show
+// missing glyphs in the exported PDF. A real fix would mean detecting the
+// script of each piece of user text and registering/selecting the matching
+// subset font at render time, roughly 20 extra font files across Tinos/
+// Arimo/Carlito, which meaningfully bloats the bundle for every user to
+// cover a rare case. Deliberately not built, same tradeoff call as the
+// ligature issue above. CJK glyphs aren't in these font families at all, in
+// the preview or the PDF, so no amount of subset-loading fixes that; it
+// would require swapping the whole typeface.
 export function registerPdfFonts() {
   if (registered) return
   registered = true
