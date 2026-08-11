@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import styles from './ConfirmDialog.module.css'
+import { useFocusTrap } from '../hooks/useFocusTrap'
 
 interface ConfirmDialogProps {
   title: string
@@ -19,23 +20,25 @@ export function ConfirmDialog({
   onCancel,
 }: ConfirmDialogProps) {
   const confirmRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useFocusTrap<HTMLDivElement>(onCancel)
 
   useEffect(() => {
     confirmRef.current?.focus()
   }, [])
 
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') onCancel()
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [onCancel])
-
   return (
     <div className={styles.backdrop} onClick={onCancel}>
-      <div className={styles.dialog} onClick={(e) => e.stopPropagation()}>
-        <p className={styles.title}>{title}</p>
+      <div
+        ref={dialogRef}
+        className={styles.dialog}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirm-dialog-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p id="confirm-dialog-title" className={styles.title}>
+          {title}
+        </p>
         <p className={styles.message}>{message}</p>
         <div className={styles.actions}>
           <button type="button" className={styles.cancelButton} onClick={onCancel}>
