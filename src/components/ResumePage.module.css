@@ -46,7 +46,7 @@
   min-height: 297mm;
   background: var(--page-bg);
   color: var(--page-ink);
-  font-family: Calibri, 'Segoe UI', sans-serif;
+  font-family: Carlito, 'Segoe UI', sans-serif;
   padding: 2cm;
   box-shadow:
     0 1px 0 1px var(--border),
@@ -60,7 +60,7 @@
 
 .name {
   margin: 0;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Tinos, 'Times New Roman', serif;
   font-size: 32pt;
   font-weight: 400;
   text-transform: uppercase;
@@ -70,7 +70,7 @@
 
 .title {
   margin: 8px 0 0;
-  font-family: 'Arial Nova', Arial, sans-serif;
+  font-family: Arimo, Arial, sans-serif;
   font-size: 12pt;
   letter-spacing: 3pt;
   text-transform: uppercase;
@@ -85,7 +85,7 @@
 
 .contact {
   margin: 0;
-  font-family: Calibri, 'Segoe UI', sans-serif;
+  font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   letter-spacing: normal;
   color: #000;
@@ -110,7 +110,7 @@
 
 .summaryTitle {
   margin: 0 0 8px;
-  font-family: 'Arial Nova', Arial, sans-serif;
+  font-family: Arimo, Arial, sans-serif;
   font-size: 12pt;
   font-weight: 700;
   letter-spacing: 1pt;
@@ -120,7 +120,7 @@
 
 .summary {
   margin: 0;
-  font-family: Calibri, 'Segoe UI', sans-serif;
+  font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   color: #000;
   line-height: 1.6;
@@ -128,7 +128,7 @@
 
 .sectionTitle {
   margin: 0 0 12px;
-  font-family: 'Arial Nova', Arial, sans-serif;
+  font-family: Arimo, Arial, sans-serif;
   font-size: 12pt;
   font-weight: 700;
   letter-spacing: 1pt;
@@ -152,7 +152,7 @@
 }
 
 .entryRole {
-  font-family: Calibri, 'Segoe UI', sans-serif;
+  font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   color: #000;
 }
@@ -172,7 +172,7 @@
 
 .entryDates {
   flex: 0 0 auto;
-  font-family: Calibri, 'Segoe UI', sans-serif;
+  font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   color: #000;
   white-space: nowrap;
@@ -189,7 +189,7 @@
   margin: 4px 0 0;
   padding: 0;
   list-style: none;
-  font-family: Calibri, 'Segoe UI', sans-serif;
+  font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   line-height: 1.55;
   color: #000;
@@ -213,7 +213,7 @@
 .skillRow {
   display: flex;
   gap: 16px;
-  font-family: Calibri, 'Segoe UI', sans-serif;
+  font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   color: #000;
   line-height: 1.5;

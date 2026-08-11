@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { pdf } from '@react-pdf/renderer'
 import styles from './App.module.css'
 import { PersonalSection } from './components/PersonalSection'
 import { LinksSection } from './components/LinksSection'
@@ -6,18 +8,41 @@ import { ExperienceSection } from './components/ExperienceSection'
 import { EducationSection } from './components/EducationSection'
 import { SkillsSection } from './components/SkillsSection'
 import { ResumePage } from './components/ResumePage'
+import { ResumeDocument } from './pdf/ResumeDocument'
+import { registerPdfFonts } from './pdf/fonts'
 import { useCVStore } from './store/cvStore'
 
+registerPdfFonts()
+
 function App() {
+  const data = useCVStore((state) => state.data)
   const reset = useCVStore((state) => state.reset)
+  const [exporting, setExporting] = useState(false)
 
   function handleReset() {
     if (window.confirm('Clear everything and start over?')) reset()
   }
 
+  async function handleExport() {
+    setExporting(true)
+    try {
+      const blob = await pdf(<ResumeDocument data={data} />).toBlob()
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${(data.name || 'resume').trim().replace(/\s+/g, '_')}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } finally {
+      setExporting(false)
+    }
+  }
+
   return (
-    <div className={`${styles.app} print-reset`}>
-      <header className={`${styles.header} print-hide`}>
+    <div className={styles.app}>
+      <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.mark} aria-hidden="true">
             ▦
@@ -25,8 +50,8 @@ function App() {
           <span className={styles.wordmark}>CV Forge</span>
         </div>
         <div className={styles.headerRight}>
-          <button type="button" className={styles.exportButton} onClick={() => window.print()}>
-            Export PDF
+          <button type="button" className={styles.exportButton} onClick={handleExport} disabled={exporting}>
+            {exporting ? 'Exporting…' : 'Export PDF'}
           </button>
           <a
             className={`${styles.githubLink} mono`}
@@ -39,8 +64,8 @@ function App() {
         </div>
       </header>
 
-      <main className={`${styles.layout} print-reset`}>
-        <div className={`${styles.formPanel} print-hide`}>
+      <main className={styles.layout}>
+        <div className={styles.formPanel}>
           <div className={styles.panelLabelRow}>
             <div className={styles.panelLabel}>editor</div>
             <button type="button" className={styles.resetButton} onClick={handleReset}>
@@ -54,8 +79,8 @@ function App() {
           <EducationSection />
           <SkillsSection />
         </div>
-        <div className={`${styles.previewPanel} print-reset`}>
-          <div className={`${styles.panelLabel} print-hide`}>preview</div>
+        <div className={styles.previewPanel}>
+          <div className={styles.panelLabel}>preview</div>
           <ResumePage />
         </div>
       </main>
