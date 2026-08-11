@@ -1,13 +1,18 @@
+import { Fragment } from 'react'
 import { useCVStore } from '../store/cvStore'
 import { usePageCount } from '../pdf/usePageCount'
+import { hasExperienceContent, hasEducationContent } from '../utils/cv'
+import { SECTION_ORDER, type SectionId } from '../constants/sections'
 import styles from './ResumePage.module.css'
 
 function normalizeUrl(url: string) {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`
 }
 
-export function ResumePage() {
+export function ResumePage({ furthestSection }: { furthestSection: SectionId }) {
   const data = useCVStore((state) => state.data)
+  const furthestIndex = SECTION_ORDER.indexOf(furthestSection)
+  const isPastSection = (id: SectionId) => furthestIndex > SECTION_ORDER.indexOf(id)
   const pageCount = usePageCount(data)
   const skillGroups = data.skillGroups
     .map((group) => ({
@@ -38,6 +43,10 @@ export function ResumePage() {
   const contactLineItems = linkItems.length <= 1 ? [...infoItems, ...linkItems] : infoItems
   const linkLineItems = linkItems.length <= 1 ? [] : linkItems
 
+  const experience = data.experience.filter(hasExperienceContent)
+  const education = data.education.filter(hasEducationContent)
+  const hasHeaderContent = Boolean(data.name || data.title || contactLineItems.length > 0 || linkLineItems.length > 0)
+
   function renderItems(items: ContactItem[]) {
     return items.map((item, idx) => (
       <span key={item.key}>
@@ -62,40 +71,44 @@ export function ResumePage() {
         <div className={styles.ruler} aria-hidden="true"></div>
         <div className={styles.rulerSide} aria-hidden="true"></div>
         <div className={styles.page} id="resume-page">
-          <header className={styles.header}>
-          <h1 className={styles.name}>{data.name || 'Your Name'}</h1>
-          <p className={styles.title}>{data.title}</p>
-          <hr className={styles.rule} />
-          <p className={styles.contact}>{renderItems(contactLineItems)}</p>
-          {linkLineItems.length > 0 && <p className={styles.contact}>{renderItems(linkLineItems)}</p>}
-          <hr className={styles.rule} />
-        </header>
+          {hasHeaderContent && (
+            <header className={styles.header}>
+              {data.name && <h1 className={styles.name}>{data.name}</h1>}
+              {data.title && <p className={styles.title}>{data.title}</p>}
+              {data.name && data.title && <hr className={styles.rule} />}
+              {contactLineItems.length > 0 && <p className={styles.contact}>{renderItems(contactLineItems)}</p>}
+              {linkLineItems.length > 0 && <p className={styles.contact}>{renderItems(linkLineItems)}</p>}
+              {isPastSection('links') && <hr className={styles.rule} />}
+            </header>
+          )}
 
         {data.summary && (
           <section className={styles.section}>
             <h2 className={styles.summaryTitle}>{data.headings.summary || 'Professional Summary'}</h2>
             <p className={styles.summary}>{data.summary}</p>
-            <hr className={styles.rule} />
+            {isPastSection('summary') && <hr className={styles.rule} />}
           </section>
         )}
 
         {skillGroups.length > 0 && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>{data.headings.skills || 'Skills'}</h2>
-            {skillGroups.map((group) => (
-              <div key={group.id} className={styles.skillRow}>
-                <span className={styles.skillLabel}>{group.label}</span>
-                <span className={styles.skillItems}>{group.itemList.join(' | ')}</span>
-              </div>
-            ))}
-            <hr className={styles.rule} />
+            <div className={styles.skillGrid}>
+              {skillGroups.map((group) => (
+                <Fragment key={group.id}>
+                  <span className={styles.skillLabel}>{group.label}</span>
+                  <span className={styles.skillItems}>{group.itemList.join(' | ')}</span>
+                </Fragment>
+              ))}
+            </div>
+            {isPastSection('skills') && <hr className={styles.rule} />}
           </section>
         )}
 
-        {data.experience.length > 0 && (
+        {experience.length > 0 && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>{data.headings.experience || 'Experience'}</h2>
-            {data.experience.map((item) => {
+            {experience.map((item) => {
               const bullets = item.description
                 .split('\n')
                 .map((line) => line.trim())
@@ -123,14 +136,14 @@ export function ResumePage() {
                 </div>
               )
             })}
-            <hr className={styles.rule} />
+            {isPastSection('experience') && <hr className={styles.rule} />}
           </section>
         )}
 
-        {data.education.length > 0 && (
+        {education.length > 0 && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>{data.headings.education || 'Education'}</h2>
-            {data.education.map((item) => (
+            {education.map((item) => (
               <div key={item.id} className={styles.entry}>
                 <div className={styles.entryHead}>
                   <span className={styles.entryRole}>

@@ -1,8 +1,22 @@
 import { Document, Page, View, Text, Link, StyleSheet } from '@react-pdf/renderer'
 import type { CVData } from '../types/cv'
+import { hasExperienceContent, hasEducationContent } from '../utils/cv'
 
 function normalizeUrl(url: string) {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`
+}
+
+// react-pdf has no CSS Grid, so the shared skill-label column width (matching
+// the HTML preview's grid-template-columns: max-content) is measured by hand
+// via canvas, using the same bold uppercase Carlito styling the label renders in.
+function measureSkillLabelWidth(labels: string[]): number {
+  if (labels.length === 0) return 0
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return 90
+  ctx.font = '700 13.33px Carlito' // 10pt bold, px = pt * 4/3
+  const widestPx = Math.max(...labels.map((label) => ctx.measureText(label.toUpperCase()).width))
+  return Math.ceil(widestPx * 0.75) + 6 // px back to pt, plus a small safety margin
 }
 
 const CM = 28.3465 // pt per cm, PDF's native unit
@@ -91,9 +105,10 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   skillLabel: {
-    width: 90,
     fontWeight: 700,
     textTransform: 'uppercase',
+    marginRight: 16,
+    flexShrink: 0,
   },
   skillItems: {
     flex: 1,
@@ -246,17 +261,24 @@ export function ResumeDocument({ data }: { data: CVData }) {
   const contactLineItems = linkItems.length <= 1 ? [...infoItems, ...linkItems] : infoItems
   const linkLineItems = linkItems.length <= 1 ? [] : linkItems
 
+  const experience = data.experience.filter(hasExperienceContent)
+  const education = data.education.filter(hasEducationContent)
+  const hasHeaderContent = Boolean(data.name || data.title || contactLineItems.length > 0 || linkLineItems.length > 0)
+  const skillLabelWidth = measureSkillLabelWidth(skillGroups.map((group) => group.label))
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-          <Text style={styles.name}>{data.name || 'Your Name'}</Text>
-          {data.title && <Text style={styles.title}>{data.title}</Text>}
-          <View style={styles.rule} />
-          <ContactLine items={contactLineItems} />
-          {linkLineItems.length > 0 && <ContactLine items={linkLineItems} spaced />}
-          <View style={styles.rule} />
-        </View>
+        {hasHeaderContent && (
+          <View style={styles.header}>
+            {data.name && <Text style={styles.name}>{data.name}</Text>}
+            {data.title && <Text style={styles.title}>{data.title}</Text>}
+            {data.name && data.title && <View style={styles.rule} />}
+            {contactLineItems.length > 0 && <ContactLine items={contactLineItems} />}
+            {linkLineItems.length > 0 && <ContactLine items={linkLineItems} spaced />}
+            <View style={styles.rule} />
+          </View>
+        )}
 
         {data.summary && (
           <View style={styles.section} wrap={false}>
@@ -271,7 +293,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
             <Text style={styles.sectionTitle}>{data.headings.skills || 'Skills'}</Text>
             {skillGroups.map((group, idx) => (
               <View key={group.id} style={[styles.skillRow, idx > 0 ? styles.skillRowSpaced : undefined]}>
-                <Text style={styles.skillLabel}>{group.label}</Text>
+                <Text style={[styles.skillLabel, { width: skillLabelWidth }]}>{group.label}</Text>
                 <Text style={styles.skillItems}>{group.itemList.join(' | ')}</Text>
               </View>
             ))}
@@ -279,28 +301,28 @@ export function ResumeDocument({ data }: { data: CVData }) {
           </View>
         )}
 
-        {data.experience.length > 0 && (
+        {experience.length > 0 && (
           <View style={styles.section}>
             {/* Wrapped with the first entry so the heading can never be
                 orphaned alone at the bottom of a page. */}
             <View wrap={false}>
               <Text style={styles.sectionTitle}>{data.headings.experience || 'Experience'}</Text>
-              <ExperienceEntry item={data.experience[0]} />
+              <ExperienceEntry item={experience[0]} />
             </View>
-            {data.experience.slice(1).map((item) => (
+            {experience.slice(1).map((item) => (
               <ExperienceEntry key={item.id} item={item} />
             ))}
             <View style={styles.rule} />
           </View>
         )}
 
-        {data.education.length > 0 && (
+        {education.length > 0 && (
           <View style={styles.section}>
             <View wrap={false}>
               <Text style={styles.sectionTitle}>{data.headings.education || 'Education'}</Text>
-              <EducationEntry item={data.education[0]} />
+              <EducationEntry item={education[0]} />
             </View>
-            {data.education.slice(1).map((item) => (
+            {education.slice(1).map((item) => (
               <EducationEntry key={item.id} item={item} />
             ))}
           </View>

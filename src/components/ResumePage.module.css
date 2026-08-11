@@ -219,27 +219,21 @@
   margin-top: 2px;
 }
 
-.skillRow {
-  display: flex;
-  gap: 16px;
+.skillGrid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 16px;
+  row-gap: 4px;
   font-family: Carlito, 'Segoe UI', sans-serif;
   font-size: 10pt;
   color: #000;
   line-height: 1.5;
 }
 
-.skillRow + .skillRow {
-  margin-top: 4px;
-}
-
 .skillLabel {
-  flex: 0 0 90px;
   font-weight: 700;
   text-transform: uppercase;
-}
-
-.skillItems {
-  flex: 1;
+  white-space: nowrap;
 }
 
 @media (max-width: 900px) {
