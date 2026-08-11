@@ -26,18 +26,6 @@ export function EducationSection() {
           </div>
           <div className={formStyles.grid}>
             <div className={formStyles.field}>
-              <label className={formStyles.label} htmlFor={`school-${item.id}`}>
-                School
-              </label>
-              <input
-                id={`school-${item.id}`}
-                className={formStyles.input}
-                placeholder="School Name"
-                value={item.school}
-                onChange={(e) => updateEducation(item.id, { school: e.target.value })}
-              />
-            </div>
-            <div className={formStyles.field}>
               <label className={formStyles.label} htmlFor={`degree-${item.id}`}>
                 Degree / programme
               </label>
@@ -47,6 +35,18 @@ export function EducationSection() {
                 placeholder="Degree or Programme"
                 value={item.degree}
                 onChange={(e) => updateEducation(item.id, { degree: e.target.value })}
+              />
+            </div>
+            <div className={formStyles.field}>
+              <label className={formStyles.label} htmlFor={`school-${item.id}`}>
+                School
+              </label>
+              <input
+                id={`school-${item.id}`}
+                className={formStyles.input}
+                placeholder="School Name"
+                value={item.school}
+                onChange={(e) => updateEducation(item.id, { school: e.target.value })}
               />
             </div>
             <div className={formStyles.field}>

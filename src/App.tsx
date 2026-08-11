@@ -88,9 +88,9 @@ function App() {
           <PersonalSection />
           <LinksSection />
           <SummarySection />
+          <SkillsSection />
           <ExperienceSection />
           <EducationSection />
-          <SkillsSection />
         </div>
         <div className={styles.previewPanel}>
           <div className={styles.panelLabel}>preview</div>
