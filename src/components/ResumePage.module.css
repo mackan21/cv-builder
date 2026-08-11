@@ -1,47 +1,9 @@
 .wrapper {
-  display: grid;
-  grid-template-columns: 22px 210mm;
-  grid-template-rows: 22px 1fr;
   width: fit-content;
   max-width: 100%;
 }
 
-.ruler {
-  grid-column: 2;
-  grid-row: 1;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--ink-faint) 0,
-    var(--ink-faint) 1px,
-    transparent 1px,
-    transparent 20px
-  );
-  background-position: bottom left;
-  background-size: 20px 8px;
-  background-repeat: repeat-x;
-  background-position-y: bottom;
-  opacity: 0.5;
-}
-
-.rulerSide {
-  grid-column: 1;
-  grid-row: 2;
-  background: repeating-linear-gradient(
-    180deg,
-    var(--ink-faint) 0,
-    var(--ink-faint) 1px,
-    transparent 1px,
-    transparent 20px
-  );
-  background-position: top right;
-  background-size: 8px 20px;
-  background-repeat: repeat-y;
-  opacity: 0.5;
-}
-
 .page {
-  grid-column: 2;
-  grid-row: 2;
   width: 210mm;
   min-height: 297mm;
   background: var(--page-bg);
@@ -55,7 +17,7 @@
 
 .pageBadge {
   width: fit-content;
-  margin: 0 0 8px 22px;
+  margin: 0 0 8px;
   padding: 4px 10px;
   border-radius: 4px;
   background: var(--accent-soft);
@@ -240,11 +202,6 @@
   .wrapper {
     grid-template-columns: 0 1fr;
     grid-template-rows: 0 1fr;
-  }
-
-  .ruler,
-  .rulerSide {
-    display: none;
   }
 
   .page {

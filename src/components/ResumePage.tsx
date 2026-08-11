@@ -68,8 +68,6 @@ export function ResumePage({ furthestSection }: { furthestSection: SectionId }) 
         <div className={styles.pageBadge}>⚠ Will export as {pageCount} pages</div>
       )}
       <div className={styles.wrapper}>
-        <div className={styles.ruler} aria-hidden="true"></div>
-        <div className={styles.rulerSide} aria-hidden="true"></div>
         <div className={styles.page} id="resume-page">
           {hasHeaderContent && (
             <header className={styles.header}>
