@@ -53,6 +53,19 @@
     0 30px 60px -20px oklch(0 0 0 / 0.55);
 }
 
+.pageBadge {
+  width: fit-content;
+  margin: 0 0 8px 22px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+
+
 .header {
   text-align: center;
   margin-bottom: 24px;

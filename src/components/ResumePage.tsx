@@ -1,4 +1,5 @@
 import { useCVStore } from '../store/cvStore'
+import { usePageCount } from '../pdf/usePageCount'
 import styles from './ResumePage.module.css'
 
 function normalizeUrl(url: string) {
@@ -7,6 +8,7 @@ function normalizeUrl(url: string) {
 
 export function ResumePage() {
   const data = useCVStore((state) => state.data)
+  const pageCount = usePageCount(data)
   const skillGroups = data.skillGroups
     .map((group) => ({
       ...group,
@@ -52,11 +54,15 @@ export function ResumePage() {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.ruler} aria-hidden="true"></div>
-      <div className={styles.rulerSide} aria-hidden="true"></div>
-      <div className={styles.page} id="resume-page">
-        <header className={styles.header}>
+    <>
+      {pageCount > 1 && (
+        <div className={styles.pageBadge}>{pageCount} pages — will print across multiple pages</div>
+      )}
+      <div className={styles.wrapper}>
+        <div className={styles.ruler} aria-hidden="true"></div>
+        <div className={styles.rulerSide} aria-hidden="true"></div>
+        <div className={styles.page} id="resume-page">
+          <header className={styles.header}>
           <h1 className={styles.name}>{data.name || 'Your Name'}</h1>
           <p className={styles.title}>{data.title}</p>
           <hr className={styles.rule} />
@@ -142,6 +148,7 @@ export function ResumePage() {
           </section>
         )}
       </div>
-    </div>
+      </div>
+    </>
   )
 }

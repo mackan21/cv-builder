@@ -170,6 +170,55 @@ function ContactLine({ items, spaced }: { items: ContactItem[]; spaced?: boolean
   )
 }
 
+type ExperienceItem = CVData['experience'][number]
+type EducationItem = CVData['education'][number]
+
+function ExperienceEntry({ item }: { item: ExperienceItem }) {
+  const bullets = item.description
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+  return (
+    <View style={styles.entry} wrap={false}>
+      <View style={styles.entryHead}>
+        <Text style={styles.entryRole}>
+          <Text style={styles.entryRoleTitle}>{item.role}</Text>
+          {item.company && <Text style={styles.entryCompany}> | {item.company}</Text>}
+          {item.location && <Text style={styles.entryLocation}>, {item.location}</Text>}
+        </Text>
+        <Text style={styles.entryDates}>
+          {item.start}
+          {item.end ? ` – ${item.end}` : ''}
+        </Text>
+      </View>
+      {bullets.map((line, idx) => (
+        <View key={idx} style={styles.bulletRow}>
+          <Text style={styles.bulletMark}>•</Text>
+          <Text style={styles.bulletText}>{line}</Text>
+        </View>
+      ))}
+    </View>
+  )
+}
+
+function EducationEntry({ item }: { item: EducationItem }) {
+  return (
+    <View style={styles.entry} wrap={false}>
+      <View style={styles.entryHead}>
+        <Text style={styles.entryRole}>
+          <Text style={styles.entryRoleTitle}>{item.degree}</Text>
+          {item.school && <Text style={styles.entryCompany}>, {item.school}</Text>}
+          {item.location && <Text style={styles.entryLocation}>, {item.location}</Text>}
+        </Text>
+        <Text style={styles.entryDates}>
+          {item.start}
+          {item.end ? ` – ${item.end}` : ''}
+        </Text>
+      </View>
+    </View>
+  )
+}
+
 export function ResumeDocument({ data }: { data: CVData }) {
   const skillGroups = data.skillGroups
     .map((group) => ({
@@ -210,7 +259,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
         </View>
 
         {data.summary && (
-          <View style={styles.section}>
+          <View style={styles.section} wrap={false}>
             <Text style={styles.summaryTitle}>Professional Summary</Text>
             <Text style={styles.summaryText}>{data.summary}</Text>
             <View style={styles.rule} />
@@ -218,7 +267,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
         )}
 
         {skillGroups.length > 0 && (
-          <View style={styles.section}>
+          <View style={styles.section} wrap={false}>
             <Text style={styles.sectionTitle}>Skills</Text>
             {skillGroups.map((group, idx) => (
               <View key={group.id} style={[styles.skillRow, idx > 0 ? styles.skillRowSpaced : undefined]}>
@@ -232,55 +281,27 @@ export function ResumeDocument({ data }: { data: CVData }) {
 
         {data.experience.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            {data.experience.map((item) => {
-              const bullets = item.description
-                .split('\n')
-                .map((line) => line.trim())
-                .filter(Boolean)
-              return (
-                <View key={item.id} style={styles.entry}>
-                  <View style={styles.entryHead}>
-                    <Text style={styles.entryRole}>
-                      <Text style={styles.entryRoleTitle}>{item.role}</Text>
-                      {item.company && <Text style={styles.entryCompany}> | {item.company}</Text>}
-                      {item.location && <Text style={styles.entryLocation}>, {item.location}</Text>}
-                    </Text>
-                    <Text style={styles.entryDates}>
-                      {item.start}
-                      {item.end ? ` – ${item.end}` : ''}
-                    </Text>
-                  </View>
-                  {bullets.map((line, idx) => (
-                    <View key={idx} style={styles.bulletRow}>
-                      <Text style={styles.bulletMark}>•</Text>
-                      <Text style={styles.bulletText}>{line}</Text>
-                    </View>
-                  ))}
-                </View>
-              )
-            })}
+            {/* Wrapped with the first entry so the heading can never be
+                orphaned alone at the bottom of a page. */}
+            <View wrap={false}>
+              <Text style={styles.sectionTitle}>Experience</Text>
+              <ExperienceEntry item={data.experience[0]} />
+            </View>
+            {data.experience.slice(1).map((item) => (
+              <ExperienceEntry key={item.id} item={item} />
+            ))}
             <View style={styles.rule} />
           </View>
         )}
 
         {data.education.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {data.education.map((item) => (
-              <View key={item.id} style={styles.entry}>
-                <View style={styles.entryHead}>
-                  <Text style={styles.entryRole}>
-                    <Text style={styles.entryRoleTitle}>{item.degree}</Text>
-                    {item.school && <Text style={styles.entryCompany}>, {item.school}</Text>}
-                    {item.location && <Text style={styles.entryLocation}>, {item.location}</Text>}
-                  </Text>
-                  <Text style={styles.entryDates}>
-                    {item.start}
-                    {item.end ? ` – ${item.end}` : ''}
-                  </Text>
-                </View>
-              </View>
+            <View wrap={false}>
+              <Text style={styles.sectionTitle}>Education</Text>
+              <EducationEntry item={data.education[0]} />
+            </View>
+            {data.education.slice(1).map((item) => (
+              <EducationEntry key={item.id} item={item} />
             ))}
           </View>
         )}
