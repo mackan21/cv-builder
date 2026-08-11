@@ -7,6 +7,7 @@ import { SummarySection } from './components/SummarySection'
 import { ExperienceSection } from './components/ExperienceSection'
 import { EducationSection } from './components/EducationSection'
 import { SkillsSection } from './components/SkillsSection'
+import { ExportDialog } from './components/ExportDialog'
 import { ResumePage } from './components/ResumePage'
 import { ResumeDocument } from './pdf/ResumeDocument'
 import { registerPdfFonts } from './pdf/fonts'
@@ -41,14 +42,22 @@ function App() {
   const [exporting, setExporting] = useState(false)
   const [activeTab, setActiveTab] = useState<TabId>('personal')
   const ActiveSection = TABS.find((tab) => tab.id === activeTab)?.Component ?? PersonalSection
+  const [exportDialogOpen, setExportDialogOpen] = useState(false)
+  const [fileName, setFileName] = useState('')
 
   function handleReset() {
     if (window.confirm('Clear everything and start over?')) reset()
   }
 
+  function openExportDialog() {
+    setFileName(defaultFileName(data.name))
+    setExportDialogOpen(true)
+  }
+
   async function handleExport() {
-    const fileName = window.prompt('Save PDF as:', defaultFileName(data.name))
-    if (!fileName) return
+    const trimmed = fileName.trim()
+    if (!trimmed) return
+    setExportDialogOpen(false)
 
     setExporting(true)
     try {
@@ -56,7 +65,7 @@ function App() {
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = fileName.toLowerCase().endsWith('.pdf') ? fileName : `${fileName}.pdf`
+      link.download = trimmed.toLowerCase().endsWith('.pdf') ? trimmed : `${trimmed}.pdf`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -76,7 +85,7 @@ function App() {
           <span className={styles.wordmark}>CV Forge</span>
         </div>
         <div className={styles.headerRight}>
-          <button type="button" className={styles.exportButton} onClick={handleExport} disabled={exporting}>
+          <button type="button" className={styles.exportButton} onClick={openExportDialog} disabled={exporting}>
             {exporting ? 'Exporting…' : 'Export PDF'}
           </button>
         </div>
@@ -111,6 +120,15 @@ function App() {
           <ResumePage />
         </div>
       </main>
+
+      {exportDialogOpen && (
+        <ExportDialog
+          fileName={fileName}
+          onFileNameChange={setFileName}
+          onConfirm={handleExport}
+          onCancel={() => setExportDialogOpen(false)}
+        />
+      )}
     </div>
   )
 }
