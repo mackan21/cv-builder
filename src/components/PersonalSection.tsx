@@ -52,7 +52,7 @@ export function PersonalSection() {
           <input
             id="phone"
             className={formStyles.input}
-            placeholder="+46 70 000 00 00"
+            placeholder="+1 234 567 8900"
             value={data.phone}
             onChange={(e) => setField('phone', e.target.value)}
           />

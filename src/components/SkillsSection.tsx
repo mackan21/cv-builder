@@ -1,6 +1,7 @@
 import { useCVStore } from '../store/cvStore'
 import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
+import { InfoTooltip } from './InfoTooltip'
 
 export function SkillsSection() {
   const skillGroups = useCVStore((state) => state.data.skillGroups)
@@ -45,7 +46,7 @@ export function SkillsSection() {
             <input
               id={`skillgroup-label-${group.id}`}
               className={formStyles.input}
-              placeholder="Frontend, Backend, Verktyg…"
+              placeholder="Technical Skills, Soft Skills…"
               value={group.label}
               onChange={(e) => updateSkillGroup(group.id, { label: e.target.value })}
             />
@@ -53,11 +54,12 @@ export function SkillsSection() {
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor={`skillgroup-items-${group.id}`}>
               Skills (comma-separated)
+              <InfoTooltip text="Separate each skill with a comma, for example Communication, Project Management, Excel" />
             </label>
             <input
               id={`skillgroup-items-${group.id}`}
               className={formStyles.input}
-              placeholder="Vue, React, TypeScript…"
+              placeholder="Communication, Teamwork, Time Management…"
               value={group.items}
               onChange={(e) => updateSkillGroup(group.id, { items: e.target.value })}
             />

@@ -25,7 +25,7 @@ export function SummarySection() {
       <div className={formStyles.field}>
         <textarea
           className={formStyles.textarea}
-          placeholder="A short summary of who you are and what you do — two or three sentences is plenty."
+          placeholder="Two or three sentences on who you are professionally and what you're looking for next."
           value={summary}
           onChange={(e) => setField('summary', e.target.value)}
           rows={14}

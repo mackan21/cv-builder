@@ -2,6 +2,7 @@ import { useCVStore } from '../store/cvStore'
 import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
 import { normalizePastedLines } from '../utils/text'
+import { InfoTooltip } from './InfoTooltip'
 
 export function ExperienceSection() {
   const experience = useCVStore((state) => state.data.experience)
@@ -47,7 +48,7 @@ export function ExperienceSection() {
               <input
                 id={`role-${item.id}`}
                 className={formStyles.input}
-                placeholder="Role Title"
+                placeholder="Job Title"
                 value={item.role}
                 onChange={(e) => updateExperience(item.id, { role: e.target.value })}
               />
@@ -83,7 +84,7 @@ export function ExperienceSection() {
               <input
                 id={`exp-start-${item.id}`}
                 className={formStyles.input}
-                placeholder="2024"
+                placeholder="Month Year"
                 value={item.start}
                 onChange={(e) => updateExperience(item.id, { start: e.target.value })}
               />
@@ -104,6 +105,7 @@ export function ExperienceSection() {
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor={`description-${item.id}`}>
               Description (one bullet per line)
+              <InfoTooltip text="Press Enter to start a new bullet, each line becomes one bullet point on your CV" />
             </label>
             <textarea
               id={`description-${item.id}`}

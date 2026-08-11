@@ -32,7 +32,7 @@ export function LinksSection() {
               <input
                 id={`link-label-${item.id}`}
                 className={formStyles.input}
-                placeholder="GitHub, Portfolio, Behance…"
+                placeholder="Portfolio, Website, Blog…"
                 value={item.label}
                 onChange={(e) => updateLink(item.id, { label: e.target.value })}
               />
@@ -44,7 +44,7 @@ export function LinksSection() {
               <input
                 id={`link-url-${item.id}`}
                 className={formStyles.input}
-                placeholder="github.com/yourname"
+                placeholder="yourwebsite.com"
                 value={item.url}
                 onChange={(e) => updateLink(item.id, { url: e.target.value })}
               />

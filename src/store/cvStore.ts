@@ -37,9 +37,8 @@ const initialData: CVData = {
     },
   ],
   skillGroups: [
-    { id: makeId(), label: 'Frontend', items: '' },
-    { id: makeId(), label: 'Backend', items: '' },
-    { id: makeId(), label: 'Verktyg', items: '' },
+    { id: makeId(), label: 'Technical Skills', items: '' },
+    { id: makeId(), label: 'Soft Skills', items: '' },
   ],
   headings: {
     summary: 'Professional Summary',

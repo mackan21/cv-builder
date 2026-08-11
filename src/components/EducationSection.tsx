@@ -82,7 +82,7 @@ export function EducationSection() {
               <input
                 id={`edu-start-${item.id}`}
                 className={formStyles.input}
-                placeholder="2021"
+                placeholder="Month Year"
                 value={item.start}
                 onChange={(e) => updateEducation(item.id, { start: e.target.value })}
               />
@@ -94,7 +94,7 @@ export function EducationSection() {
               <input
                 id={`edu-end-${item.id}`}
                 className={formStyles.input}
-                placeholder="2024"
+                placeholder="Month Year"
                 value={item.end}
                 onChange={(e) => updateEducation(item.id, { end: e.target.value })}
               />
