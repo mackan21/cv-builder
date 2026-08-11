@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   rule: {
     borderTopWidth: 1,
     borderTopColor: '#000000',
-    marginVertical: 14,
+    marginVertical: 10,
     width: '100%',
   },
   contactLine: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   entry: {
-    marginBottom: 14,
+    marginBottom: 10,
   },
   entryHead: {
     flexDirection: 'row',
