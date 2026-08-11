@@ -73,7 +73,7 @@ export function ResumePage() {
 
         {data.summary && (
           <section className={styles.section}>
-            <h2 className={styles.summaryTitle}>Professional Summary</h2>
+            <h2 className={styles.summaryTitle}>{data.headings.summary || 'Professional Summary'}</h2>
             <p className={styles.summary}>{data.summary}</p>
             <hr className={styles.rule} />
           </section>
@@ -81,7 +81,7 @@ export function ResumePage() {
 
         {skillGroups.length > 0 && (
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Skills</h2>
+            <h2 className={styles.sectionTitle}>{data.headings.skills || 'Skills'}</h2>
             {skillGroups.map((group) => (
               <div key={group.id} className={styles.skillRow}>
                 <span className={styles.skillLabel}>{group.label}</span>
@@ -94,7 +94,7 @@ export function ResumePage() {
 
         {data.experience.length > 0 && (
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Experience</h2>
+            <h2 className={styles.sectionTitle}>{data.headings.experience || 'Experience'}</h2>
             {data.experience.map((item) => {
               const bullets = item.description
                 .split('\n')
@@ -129,7 +129,7 @@ export function ResumePage() {
 
         {data.education.length > 0 && (
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Education</h2>
+            <h2 className={styles.sectionTitle}>{data.headings.education || 'Education'}</h2>
             {data.education.map((item) => (
               <div key={item.id} className={styles.entry}>
                 <div className={styles.entryHead}>

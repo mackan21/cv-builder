@@ -260,7 +260,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
 
         {data.summary && (
           <View style={styles.section} wrap={false}>
-            <Text style={styles.summaryTitle}>Professional Summary</Text>
+            <Text style={styles.summaryTitle}>{data.headings.summary || 'Professional Summary'}</Text>
             <Text style={styles.summaryText}>{data.summary}</Text>
             <View style={styles.rule} />
           </View>
@@ -268,7 +268,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
 
         {skillGroups.length > 0 && (
           <View style={styles.section} wrap={false}>
-            <Text style={styles.sectionTitle}>Skills</Text>
+            <Text style={styles.sectionTitle}>{data.headings.skills || 'Skills'}</Text>
             {skillGroups.map((group, idx) => (
               <View key={group.id} style={[styles.skillRow, idx > 0 ? styles.skillRowSpaced : undefined]}>
                 <Text style={styles.skillLabel}>{group.label}</Text>
@@ -284,7 +284,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
             {/* Wrapped with the first entry so the heading can never be
                 orphaned alone at the bottom of a page. */}
             <View wrap={false}>
-              <Text style={styles.sectionTitle}>Experience</Text>
+              <Text style={styles.sectionTitle}>{data.headings.experience || 'Experience'}</Text>
               <ExperienceEntry item={data.experience[0]} />
             </View>
             {data.experience.slice(1).map((item) => (
@@ -297,7 +297,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
         {data.education.length > 0 && (
           <View style={styles.section}>
             <View wrap={false}>
-              <Text style={styles.sectionTitle}>Education</Text>
+              <Text style={styles.sectionTitle}>{data.headings.education || 'Education'}</Text>
               <EducationEntry item={data.education[0]} />
             </View>
             {data.education.slice(1).map((item) => (

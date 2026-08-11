@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { CVData, Education, Experience, Link, SkillGroup } from '../types/cv'
+import type { CVData, Education, Experience, Headings, Link, SkillGroup } from '../types/cv'
 
 function makeId() {
   return Math.random().toString(36).slice(2, 10)
@@ -41,6 +41,12 @@ const initialData: CVData = {
     { id: makeId(), label: 'Backend', items: '' },
     { id: makeId(), label: 'Verktyg', items: '' },
   ],
+  headings: {
+    summary: 'Professional Summary',
+    skills: 'Skills',
+    experience: 'Experience',
+    education: 'Education',
+  },
 }
 
 interface CVStore {
@@ -58,6 +64,7 @@ interface CVStore {
   addSkillGroup: () => void
   updateSkillGroup: (id: string, patch: Partial<SkillGroup>) => void
   removeSkillGroup: (id: string) => void
+  updateHeading: (key: keyof Headings, value: string) => void
   reset: () => void
 }
 
@@ -137,6 +144,10 @@ export const useCVStore = create<CVStore>()(
       removeSkillGroup: (id) =>
         set((state) => ({
           data: { ...state.data, skillGroups: state.data.skillGroups.filter((item) => item.id !== id) },
+        })),
+      updateHeading: (key, value) =>
+        set((state) => ({
+          data: { ...state.data, headings: { ...state.data.headings, [key]: value } },
         })),
       reset: () => set({ data: initialData }),
     }),

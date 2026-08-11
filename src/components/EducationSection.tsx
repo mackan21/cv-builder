@@ -4,13 +4,27 @@ import listStyles from '../styles/list.module.css'
 
 export function EducationSection() {
   const education = useCVStore((state) => state.data.education)
+  const heading = useCVStore((state) => state.data.headings.education)
   const addEducation = useCVStore((state) => state.addEducation)
   const updateEducation = useCVStore((state) => state.updateEducation)
   const removeEducation = useCVStore((state) => state.removeEducation)
+  const updateHeading = useCVStore((state) => state.updateHeading)
 
   return (
     <section className={formStyles.section}>
       <h2 className={formStyles.sectionTitle}>Education</h2>
+      <div className={formStyles.field}>
+        <label className={formStyles.label} htmlFor="education-heading">
+          Heading (shown on CV)
+        </label>
+        <input
+          id="education-heading"
+          className={formStyles.input}
+          placeholder="Education"
+          value={heading}
+          onChange={(e) => updateHeading('education', e.target.value)}
+        />
+      </div>
       {education.map((item, index) => (
         <div key={item.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>

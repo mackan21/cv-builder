@@ -5,13 +5,27 @@ import { normalizePastedLines } from '../utils/text'
 
 export function ExperienceSection() {
   const experience = useCVStore((state) => state.data.experience)
+  const heading = useCVStore((state) => state.data.headings.experience)
   const addExperience = useCVStore((state) => state.addExperience)
   const updateExperience = useCVStore((state) => state.updateExperience)
   const removeExperience = useCVStore((state) => state.removeExperience)
+  const updateHeading = useCVStore((state) => state.updateHeading)
 
   return (
     <section className={formStyles.section}>
       <h2 className={formStyles.sectionTitle}>Experience</h2>
+      <div className={formStyles.field}>
+        <label className={formStyles.label} htmlFor="experience-heading">
+          Heading (shown on CV)
+        </label>
+        <input
+          id="experience-heading"
+          className={formStyles.input}
+          placeholder="Experience"
+          value={heading}
+          onChange={(e) => updateHeading('experience', e.target.value)}
+        />
+      </div>
       {experience.map((item, index) => (
         <div key={item.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>

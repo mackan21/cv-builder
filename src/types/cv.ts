@@ -29,6 +29,13 @@ export interface SkillGroup {
   items: string
 }
 
+export interface Headings {
+  summary: string
+  skills: string
+  experience: string
+  education: string
+}
+
 export interface CVData {
   name: string
   title: string
@@ -41,4 +48,5 @@ export interface CVData {
   experience: Experience[]
   education: Education[]
   skillGroups: SkillGroup[]
+  headings: Headings
 }

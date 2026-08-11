@@ -4,13 +4,27 @@ import listStyles from '../styles/list.module.css'
 
 export function SkillsSection() {
   const skillGroups = useCVStore((state) => state.data.skillGroups)
+  const heading = useCVStore((state) => state.data.headings.skills)
   const addSkillGroup = useCVStore((state) => state.addSkillGroup)
   const updateSkillGroup = useCVStore((state) => state.updateSkillGroup)
   const removeSkillGroup = useCVStore((state) => state.removeSkillGroup)
+  const updateHeading = useCVStore((state) => state.updateHeading)
 
   return (
     <section className={formStyles.section}>
       <h2 className={formStyles.sectionTitle}>Skills</h2>
+      <div className={formStyles.field}>
+        <label className={formStyles.label} htmlFor="skills-heading">
+          Heading (shown on CV)
+        </label>
+        <input
+          id="skills-heading"
+          className={formStyles.input}
+          placeholder="Skills"
+          value={heading}
+          onChange={(e) => updateHeading('skills', e.target.value)}
+        />
+      </div>
       {skillGroups.map((group, index) => (
         <div key={group.id} className={listStyles.entry}>
           <div className={listStyles.entryHead}>
