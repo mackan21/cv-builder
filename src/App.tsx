@@ -66,14 +66,6 @@ function App() {
           <button type="button" className={styles.exportButton} onClick={handleExport} disabled={exporting}>
             {exporting ? 'Exporting…' : 'Export PDF'}
           </button>
-          <a
-            className={`${styles.githubLink} mono`}
-            href="https://github.com/mackan21/cv-builder"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            source →
-          </a>
         </div>
       </header>
 

@@ -71,16 +71,6 @@
   filter: brightness(1.1);
 }
 
-.githubLink {
-  font-size: 12.5px;
-  color: var(--ink-muted);
-  text-decoration: none;
-}
-
-.githubLink:hover {
-  color: var(--ink);
-}
-
 .layout {
   flex: 1;
   display: grid;
