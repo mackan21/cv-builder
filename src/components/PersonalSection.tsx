@@ -17,6 +17,7 @@ export function PersonalSection() {
             id="name"
             className={formStyles.input}
             placeholder="Your Name"
+            autoComplete="name"
             value={data.name}
             onChange={(e) => setField('name', e.target.value)}
           />
@@ -29,6 +30,7 @@ export function PersonalSection() {
             id="title"
             className={formStyles.input}
             placeholder="Your Title"
+            autoComplete="organization-title"
             value={data.title}
             onChange={(e) => setField('title', e.target.value)}
           />
@@ -39,8 +41,10 @@ export function PersonalSection() {
           </label>
           <input
             id="email"
+            type="email"
             className={formStyles.input}
             placeholder="you@email.com"
+            autoComplete="email"
             value={data.email}
             onChange={(e) => setField('email', e.target.value)}
           />
@@ -51,8 +55,10 @@ export function PersonalSection() {
           </label>
           <input
             id="phone"
+            type="tel"
             className={formStyles.input}
             placeholder="+1 234 567 8900"
+            autoComplete="tel"
             value={data.phone}
             onChange={(e) => setField('phone', e.target.value)}
           />
@@ -75,8 +81,10 @@ export function PersonalSection() {
           </label>
           <input
             id="linkedin"
+            type="url"
             className={formStyles.input}
             placeholder="linkedin.com/in/yourname"
+            autoComplete="url"
             value={data.linkedin}
             onChange={(e) => setField('linkedin', e.target.value)}
           />
