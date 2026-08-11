@@ -1,6 +1,8 @@
 import { useCVStore } from '../store/cvStore'
 import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
+import { ConfirmDialog } from './ConfirmDialog'
+import { useConfirmRemove } from '../hooks/useConfirmRemove'
 
 export function CertificationsSection() {
   const certifications = useCVStore((state) => state.data.certifications)
@@ -9,6 +11,7 @@ export function CertificationsSection() {
   const updateCertification = useCVStore((state) => state.updateCertification)
   const removeCertification = useCVStore((state) => state.removeCertification)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const removeConfirm = useConfirmRemove(removeCertification)
 
   return (
     <section className={formStyles.section}>
@@ -32,7 +35,7 @@ export function CertificationsSection() {
             <button
               type="button"
               className={listStyles.removeButton}
-              onClick={() => removeCertification(item.id)}
+              onClick={() => removeConfirm.requestRemove(item.id)}
               aria-label="Remove this certification"
             >
               Remove
@@ -93,6 +96,15 @@ export function CertificationsSection() {
       <button type="button" className={listStyles.addButton} onClick={addCertification}>
         + Add certification
       </button>
+      {removeConfirm.pendingId && (
+        <ConfirmDialog
+          title="Remove certification"
+          message="This removes this certification. This can't be undone."
+          confirmLabel="Remove"
+          onConfirm={removeConfirm.confirm}
+          onCancel={removeConfirm.cancel}
+        />
+      )}
     </section>
   )
 }

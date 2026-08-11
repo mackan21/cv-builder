@@ -1,6 +1,8 @@
 import { useCVStore } from '../store/cvStore'
 import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
+import { ConfirmDialog } from './ConfirmDialog'
+import { useConfirmRemove } from '../hooks/useConfirmRemove'
 
 export function EducationSection() {
   const education = useCVStore((state) => state.data.education)
@@ -9,6 +11,7 @@ export function EducationSection() {
   const updateEducation = useCVStore((state) => state.updateEducation)
   const removeEducation = useCVStore((state) => state.removeEducation)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const removeConfirm = useConfirmRemove(removeEducation)
 
   return (
     <section className={formStyles.section}>
@@ -32,7 +35,7 @@ export function EducationSection() {
             <button
               type="button"
               className={listStyles.removeButton}
-              onClick={() => removeEducation(item.id)}
+              onClick={() => removeConfirm.requestRemove(item.id)}
               aria-label="Remove this education entry"
             >
               Remove
@@ -105,6 +108,15 @@ export function EducationSection() {
       <button type="button" className={listStyles.addButton} onClick={addEducation}>
         + Add education
       </button>
+      {removeConfirm.pendingId && (
+        <ConfirmDialog
+          title="Remove education"
+          message="This removes this education entry. This can't be undone."
+          confirmLabel="Remove"
+          onConfirm={removeConfirm.confirm}
+          onCancel={removeConfirm.cancel}
+        />
+      )}
     </section>
   )
 }

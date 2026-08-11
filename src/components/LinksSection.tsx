@@ -1,12 +1,15 @@
 import { useCVStore } from '../store/cvStore'
 import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
+import { ConfirmDialog } from './ConfirmDialog'
+import { useConfirmRemove } from '../hooks/useConfirmRemove'
 
 export function LinksSection() {
   const links = useCVStore((state) => state.data.links)
   const addLink = useCVStore((state) => state.addLink)
   const updateLink = useCVStore((state) => state.updateLink)
   const removeLink = useCVStore((state) => state.removeLink)
+  const removeConfirm = useConfirmRemove(removeLink)
 
   return (
     <section className={formStyles.section}>
@@ -18,7 +21,7 @@ export function LinksSection() {
             <button
               type="button"
               className={listStyles.removeButton}
-              onClick={() => removeLink(item.id)}
+              onClick={() => removeConfirm.requestRemove(item.id)}
               aria-label="Remove this link"
             >
               Remove
@@ -55,6 +58,15 @@ export function LinksSection() {
       <button type="button" className={listStyles.addButton} onClick={addLink}>
         + Add link
       </button>
+      {removeConfirm.pendingId && (
+        <ConfirmDialog
+          title="Remove link"
+          message="This removes this link. This can't be undone."
+          confirmLabel="Remove"
+          onConfirm={removeConfirm.confirm}
+          onCancel={removeConfirm.cancel}
+        />
+      )}
     </section>
   )
 }

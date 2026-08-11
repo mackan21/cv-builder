@@ -2,6 +2,8 @@ import { useCVStore } from '../store/cvStore'
 import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
 import { InfoTooltip } from './InfoTooltip'
+import { ConfirmDialog } from './ConfirmDialog'
+import { useConfirmRemove } from '../hooks/useConfirmRemove'
 
 export function SkillsSection() {
   const skillGroups = useCVStore((state) => state.data.skillGroups)
@@ -10,6 +12,7 @@ export function SkillsSection() {
   const updateSkillGroup = useCVStore((state) => state.updateSkillGroup)
   const removeSkillGroup = useCVStore((state) => state.removeSkillGroup)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const removeConfirm = useConfirmRemove(removeSkillGroup)
 
   return (
     <section className={formStyles.section}>
@@ -33,7 +36,7 @@ export function SkillsSection() {
             <button
               type="button"
               className={listStyles.removeButton}
-              onClick={() => removeSkillGroup(group.id)}
+              onClick={() => removeConfirm.requestRemove(group.id)}
               aria-label="Remove this skill group"
             >
               Remove
@@ -69,6 +72,15 @@ export function SkillsSection() {
       <button type="button" className={listStyles.addButton} onClick={addSkillGroup}>
         + Add skill category
       </button>
+      {removeConfirm.pendingId && (
+        <ConfirmDialog
+          title="Remove skill category"
+          message="This removes this skill category. This can't be undone."
+          confirmLabel="Remove"
+          onConfirm={removeConfirm.confirm}
+          onCancel={removeConfirm.cancel}
+        />
+      )}
     </section>
   )
 }

@@ -3,6 +3,8 @@ import formStyles from '../styles/form.module.css'
 import listStyles from '../styles/list.module.css'
 import { normalizePastedLines } from '../utils/text'
 import { InfoTooltip } from './InfoTooltip'
+import { ConfirmDialog } from './ConfirmDialog'
+import { useConfirmRemove } from '../hooks/useConfirmRemove'
 
 export function ExperienceSection() {
   const experience = useCVStore((state) => state.data.experience)
@@ -11,6 +13,7 @@ export function ExperienceSection() {
   const updateExperience = useCVStore((state) => state.updateExperience)
   const removeExperience = useCVStore((state) => state.removeExperience)
   const updateHeading = useCVStore((state) => state.updateHeading)
+  const removeConfirm = useConfirmRemove(removeExperience)
 
   return (
     <section className={formStyles.section}>
@@ -34,7 +37,7 @@ export function ExperienceSection() {
             <button
               type="button"
               className={listStyles.removeButton}
-              onClick={() => removeExperience(item.id)}
+              onClick={() => removeConfirm.requestRemove(item.id)}
               aria-label="Remove this experience"
             >
               Remove
@@ -130,6 +133,15 @@ export function ExperienceSection() {
       <button type="button" className={listStyles.addButton} onClick={addExperience}>
         + Add experience
       </button>
+      {removeConfirm.pendingId && (
+        <ConfirmDialog
+          title="Remove experience"
+          message="This removes this experience entry. This can't be undone."
+          confirmLabel="Remove"
+          onConfirm={removeConfirm.confirm}
+          onCancel={removeConfirm.cancel}
+        />
+      )}
     </section>
   )
 }
