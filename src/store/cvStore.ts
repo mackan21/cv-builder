@@ -78,6 +78,53 @@ const initialData: CVData = {
   },
 }
 
+const EXPERIENCE_DEFAULTS: Omit<Experience, 'id'> = {
+  role: '',
+  company: '',
+  location: '',
+  start: '',
+  end: '',
+  description: '',
+}
+const EDUCATION_DEFAULTS: Omit<Education, 'id'> = { school: '', degree: '', location: '', start: '', end: '' }
+const LINK_DEFAULTS: Omit<Link, 'id'> = { label: '', url: '' }
+const SKILL_GROUP_DEFAULTS: Omit<SkillGroup, 'id'> = { label: '', items: '' }
+const CERTIFICATION_DEFAULTS: Omit<Certification, 'id'> = { name: '', issuer: '', date: '', url: '' }
+
+// A field added to one of these shapes after a user already had entries saved
+// leaves old localStorage records missing that key entirely (JSON has no
+// `undefined`, the key is just absent). Every array item gets backfilled with
+// its full default shape on load, so a missing field is always '' and never
+// undefined, no matter which field gets added next — this exact bug class
+// (an unguarded .trim()/.split() on a field a returning user's old data
+// doesn't have) has bitten the app three times now, see status.md.
+function withDefaults<T extends { id: string }>(item: T, defaults: Omit<T, 'id'>): T {
+  return { ...defaults, ...item }
+}
+
+// Only sets a key when the source actually had it — a key explicitly set to
+// `undefined` still overwrites the good default on the outer spread merge
+// below, same failure mode as a plain missing key would cause if this
+// function didn't exist at all. An entirely missing array (e.g. `links`
+// added after this record was saved) must fall through untouched so the
+// outer merge keeps `currentState.data`'s default `[]`, not `undefined`.
+function sanitizeData(data: Partial<CVData> | undefined): Partial<CVData> {
+  if (!data) return {}
+  return {
+    ...data,
+    ...(data.experience && { experience: data.experience.map((item) => withDefaults(item, EXPERIENCE_DEFAULTS)) }),
+    ...(data.education && { education: data.education.map((item) => withDefaults(item, EDUCATION_DEFAULTS)) }),
+    ...(data.links && { links: data.links.map((item) => withDefaults(item, LINK_DEFAULTS)) }),
+    ...(data.skillGroups && {
+      skillGroups: data.skillGroups.map((item) => withDefaults(item, SKILL_GROUP_DEFAULTS)),
+    }),
+    ...(data.certifications && {
+      certifications: data.certifications.map((item) => withDefaults(item, CERTIFICATION_DEFAULTS)),
+    }),
+    ...(data.headings && { headings: { ...initialData.headings, ...data.headings } }),
+  }
+}
+
 type ReorderableField = 'links' | 'experience' | 'education' | 'skillGroups' | 'certifications'
 
 interface CVStore {
@@ -220,7 +267,7 @@ export const useCVStore = create<CVStore>()(
       merge: (persistedState, currentState) => ({
         ...currentState,
         ...(persistedState as Partial<CVStore>),
-        data: { ...currentState.data, ...(persistedState as Partial<CVStore>)?.data },
+        data: { ...currentState.data, ...sanitizeData((persistedState as Partial<CVStore>)?.data) },
       }),
     },
   ),

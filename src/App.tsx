@@ -45,8 +45,8 @@ function defaultFileName(name: string) {
 // Lets a returning user's already-filled CV show all its dividing lines
 // immediately, instead of only revealing them as they click through tabs again.
 function furthestFilledIndex(data: CVData): number {
-  const hasSkills = data.skillGroups.some((group) => group.items.trim())
-  const hasLinks = Boolean(data.linkedin) || data.links.some((link) => link.url)
+  const hasSkills = data.skillGroups?.some((group) => group.items?.trim()) ?? false
+  const hasLinks = Boolean(data.linkedin) || (data.links?.some((link) => link.url) ?? false)
   const hasPersonal = Boolean(data.name || data.title || data.email || data.phone || data.location)
 
   const filled: SectionId[] = [
@@ -54,9 +54,9 @@ function furthestFilledIndex(data: CVData): number {
     ...(hasLinks ? (['links'] as const) : []),
     ...(data.summary ? (['summary'] as const) : []),
     ...(hasSkills ? (['skills'] as const) : []),
-    ...(data.experience.some(hasExperienceContent) ? (['experience'] as const) : []),
-    ...(data.education.some(hasEducationContent) ? (['education'] as const) : []),
-    ...(data.certifications.some(hasCertificationContent) ? (['certifications'] as const) : []),
+    ...((data.experience?.some(hasExperienceContent) ?? false) ? (['experience'] as const) : []),
+    ...((data.education?.some(hasEducationContent) ?? false) ? (['education'] as const) : []),
+    ...((data.certifications?.some(hasCertificationContent) ?? false) ? (['certifications'] as const) : []),
   ]
   return filled.reduce((max, id) => Math.max(max, SECTION_ORDER.indexOf(id)), 0)
 }
