@@ -6,6 +6,7 @@ export const SECTION_ORDER = [
   'experience',
   'education',
   'certifications',
+  'customSection',
 ] as const
 
 export type SectionId = (typeof SECTION_ORDER)[number]

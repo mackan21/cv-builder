@@ -7,6 +7,7 @@ import { SummarySection } from './components/SummarySection'
 import { ExperienceSection } from './components/ExperienceSection'
 import { EducationSection } from './components/EducationSection'
 import { CertificationsSection } from './components/CertificationsSection'
+import { CustomSection } from './components/CustomSection'
 import { SkillsSection } from './components/SkillsSection'
 import { ExportDialog } from './components/ExportDialog'
 import { ConfirmDialog } from './components/ConfirmDialog'
@@ -15,7 +16,7 @@ import { ResumeDocument } from './pdf/ResumeDocument'
 import { registerPdfFonts } from './pdf/fonts'
 import { useCVStore } from './store/cvStore'
 import { SECTION_ORDER, type SectionId } from './constants/sections'
-import { hasExperienceContent, hasEducationContent, hasCertificationContent } from './utils/cv'
+import { hasExperienceContent, hasEducationContent, hasCertificationContent, hasCustomEntryContent } from './utils/cv'
 import type { CVData } from './types/cv'
 
 registerPdfFonts()
@@ -28,6 +29,7 @@ const SECTION_META: Record<SectionId, { label: string; Component: React.Componen
   experience: { label: 'Experience', Component: ExperienceSection },
   education: { label: 'Education', Component: EducationSection },
   certifications: { label: 'Certifications', Component: CertificationsSection },
+  customSection: { label: 'Additional', Component: CustomSection },
 }
 
 const TABS = SECTION_ORDER.map((id) => ({ id, ...SECTION_META[id] }))
@@ -57,6 +59,7 @@ function furthestFilledIndex(data: CVData): number {
     ...((data.experience?.some(hasExperienceContent) ?? false) ? (['experience'] as const) : []),
     ...((data.education?.some(hasEducationContent) ?? false) ? (['education'] as const) : []),
     ...((data.certifications?.some(hasCertificationContent) ?? false) ? (['certifications'] as const) : []),
+    ...((data.customSection?.some(hasCustomEntryContent) ?? false) ? (['customSection'] as const) : []),
   ]
   return filled.reduce((max, id) => Math.max(max, SECTION_ORDER.indexOf(id)), 0)
 }

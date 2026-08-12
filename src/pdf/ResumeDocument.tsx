@@ -1,6 +1,6 @@
 import { Document, Page, View, Text, Link, StyleSheet } from '@react-pdf/renderer'
 import type { CVData } from '../types/cv'
-import { hasExperienceContent, hasEducationContent, hasCertificationContent } from '../utils/cv'
+import { hasExperienceContent, hasEducationContent, hasCertificationContent, hasCustomEntryContent } from '../utils/cv'
 import { buildContactLines, normalizeUrl, type ContactItem } from '../utils/contact'
 
 // react-pdf has no CSS Grid, so the shared skill-label column width (matching
@@ -183,6 +183,7 @@ function ContactLine({ items, spaced }: { items: ContactItem[]; spaced?: boolean
 type ExperienceItem = CVData['experience'][number]
 type EducationItem = CVData['education'][number]
 type CertificationItem = CVData['certifications'][number]
+type CustomEntryItem = CVData['customSection'][number]
 
 // An entry with this much bullet text can't fit on a single page even on
 // its own, so locking it as one unbreakable unit (the usual safeguard
@@ -260,6 +261,30 @@ function CertificationEntry({ item }: { item: CertificationItem }) {
   )
 }
 
+function CustomEntry({ item }: { item: CustomEntryItem }) {
+  const bullets = item.description
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+  return (
+    <View style={styles.entry} wrap={isEntryTooLongToLock(item.description)}>
+      <View style={styles.entryHead}>
+        <Text style={styles.entryRole}>
+          <Text style={styles.entryRoleTitle}>{item.title}</Text>
+          {item.subtitle && <Text style={styles.entryCompany}>, {item.subtitle}</Text>}
+        </Text>
+        <Text style={styles.entryDates}>{item.date}</Text>
+      </View>
+      {bullets.map((line, idx) => (
+        <View key={idx} style={styles.bulletRow}>
+          <Text style={styles.bulletMark}>•</Text>
+          <Text style={styles.bulletText}>{line}</Text>
+        </View>
+      ))}
+    </View>
+  )
+}
+
 export function ResumeDocument({ data }: { data: CVData }) {
   const skillGroups = data.skillGroups
     .map((group) => ({
@@ -276,6 +301,7 @@ export function ResumeDocument({ data }: { data: CVData }) {
   const experience = data.experience.filter(hasExperienceContent)
   const education = data.education.filter(hasEducationContent)
   const certifications = data.certifications.filter(hasCertificationContent)
+  const customSection = data.customSection.filter(hasCustomEntryContent)
   const skillLabelWidth = measureSkillLabelWidth(skillGroups.map((group) => group.label))
 
   return (
@@ -350,6 +376,19 @@ export function ResumeDocument({ data }: { data: CVData }) {
             </View>
             {certifications.slice(1).map((item) => (
               <CertificationEntry key={item.id} item={item} />
+            ))}
+            <View style={styles.rule} />
+          </View>
+        )}
+
+        {customSection.length > 0 && (
+          <View style={styles.section}>
+            <View wrap={isEntryTooLongToLock(customSection[0].description)}>
+              <Text style={styles.sectionTitle}>{data.headings.customSection || 'Additional Section'}</Text>
+              <CustomEntry item={customSection[0]} />
+            </View>
+            {customSection.slice(1).map((item) => (
+              <CustomEntry key={item.id} item={item} />
             ))}
           </View>
         )}

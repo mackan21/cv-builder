@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Certification, CVData, Education, Experience, Headings, Link, SkillGroup } from '../types/cv'
+import type { Certification, CustomEntry, CVData, Education, Experience, Headings, Link, SkillGroup } from '../types/cv'
 
 function makeId() {
   return Math.random().toString(36).slice(2, 10)
@@ -69,12 +69,14 @@ const initialData: CVData = {
     { id: makeId(), label: 'Soft Skills', items: '' },
   ],
   certifications: [],
+  customSection: [],
   headings: {
     summary: 'Professional Summary',
     skills: 'Skills',
     experience: 'Experience',
     education: 'Education',
     certifications: 'Certifications',
+    customSection: 'Additional Section',
   },
 }
 
@@ -90,6 +92,7 @@ const EDUCATION_DEFAULTS: Omit<Education, 'id'> = { school: '', degree: '', loca
 const LINK_DEFAULTS: Omit<Link, 'id'> = { label: '', url: '' }
 const SKILL_GROUP_DEFAULTS: Omit<SkillGroup, 'id'> = { label: '', items: '' }
 const CERTIFICATION_DEFAULTS: Omit<Certification, 'id'> = { name: '', issuer: '', date: '', url: '' }
+const CUSTOM_ENTRY_DEFAULTS: Omit<CustomEntry, 'id'> = { title: '', subtitle: '', date: '', description: '' }
 
 // A field added to one of these shapes after a user already had entries saved
 // leaves old localStorage records missing that key entirely (JSON has no
@@ -121,11 +124,14 @@ function sanitizeData(data: Partial<CVData> | undefined): Partial<CVData> {
     ...(data.certifications && {
       certifications: data.certifications.map((item) => withDefaults(item, CERTIFICATION_DEFAULTS)),
     }),
+    ...(data.customSection && {
+      customSection: data.customSection.map((item) => withDefaults(item, CUSTOM_ENTRY_DEFAULTS)),
+    }),
     ...(data.headings && { headings: { ...initialData.headings, ...data.headings } }),
   }
 }
 
-type ReorderableField = 'links' | 'experience' | 'education' | 'skillGroups' | 'certifications'
+type ReorderableField = 'links' | 'experience' | 'education' | 'skillGroups' | 'certifications' | 'customSection'
 
 interface CVStore {
   data: CVData
@@ -146,6 +152,9 @@ interface CVStore {
   addCertification: () => void
   updateCertification: (id: string, patch: Partial<Certification>) => void
   removeCertification: (id: string) => void
+  addCustomEntry: () => void
+  updateCustomEntry: (id: string, patch: Partial<CustomEntry>) => void
+  removeCustomEntry: (id: string) => void
   updateHeading: (key: keyof Headings, value: string) => void
   reset: () => void
 }
@@ -254,6 +263,27 @@ export const useCVStore = create<CVStore>()(
       removeCertification: (id) =>
         set((state) => ({
           data: { ...state.data, certifications: state.data.certifications.filter((item) => item.id !== id) },
+        })),
+      addCustomEntry: () =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            customSection: [
+              ...state.data.customSection,
+              { id: makeId(), title: '', subtitle: '', date: '', description: '' },
+            ],
+          },
+        })),
+      updateCustomEntry: (id, patch) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            customSection: state.data.customSection.map((item) => (item.id === id ? { ...item, ...patch } : item)),
+          },
+        })),
+      removeCustomEntry: (id) =>
+        set((state) => ({
+          data: { ...state.data, customSection: state.data.customSection.filter((item) => item.id !== id) },
         })),
       updateHeading: (key, value) =>
         set((state) => ({

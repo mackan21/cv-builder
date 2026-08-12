@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { useCVStore } from '../store/cvStore'
 import { usePageCount } from '../pdf/usePageCount'
-import { hasExperienceContent, hasEducationContent, hasCertificationContent } from '../utils/cv'
+import { hasExperienceContent, hasEducationContent, hasCertificationContent, hasCustomEntryContent } from '../utils/cv'
 import { buildContactLines, normalizeUrl, type ContactItem } from '../utils/contact'
 import { SECTION_ORDER, type SectionId } from '../constants/sections'
 import styles from './ResumePage.module.css'
@@ -26,6 +26,7 @@ export function ResumePage({ furthestSection }: { furthestSection: SectionId }) 
   const experience = data.experience.filter(hasExperienceContent)
   const education = data.education.filter(hasEducationContent)
   const certifications = data.certifications.filter(hasCertificationContent)
+  const customSection = data.customSection.filter(hasCustomEntryContent)
 
   function renderItems(items: ContactItem[]) {
     return items.map((item, idx) => (
@@ -162,6 +163,37 @@ export function ResumePage({ furthestSection }: { furthestSection: SectionId }) 
                 </div>
               </div>
             ))}
+            {isPastSection('certifications') && <hr className={styles.rule} />}
+          </section>
+        )}
+
+        {customSection.length > 0 && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{data.headings.customSection || 'Additional Section'}</h2>
+            {customSection.map((item) => {
+              const bullets = item.description
+                .split('\n')
+                .map((line) => line.trim())
+                .filter(Boolean)
+              return (
+                <div key={item.id} className={styles.entry}>
+                  <div className={styles.entryHead}>
+                    <span className={styles.entryRole}>
+                      <span className={styles.entryRoleTitle}>{item.title}</span>
+                      {item.subtitle && <span className={styles.entryCompany}>, {item.subtitle}</span>}
+                    </span>
+                    <span className={styles.entryDates}>{item.date}</span>
+                  </div>
+                  {bullets.length > 0 && (
+                    <ul className={styles.entryBullets}>
+                      {bullets.map((line, idx) => (
+                        <li key={idx}>{line}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            })}
           </section>
         )}
       </div>

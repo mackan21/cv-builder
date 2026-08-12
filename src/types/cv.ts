@@ -37,12 +37,21 @@ export interface SkillGroup {
   items: string
 }
 
+export interface CustomEntry {
+  id: string
+  title: string
+  subtitle: string
+  date: string
+  description: string
+}
+
 export interface Headings {
   summary: string
   skills: string
   experience: string
   education: string
   certifications: string
+  customSection: string
 }
 
 export interface CVData {
@@ -58,5 +67,6 @@ export interface CVData {
   education: Education[]
   skillGroups: SkillGroup[]
   certifications: Certification[]
+  customSection: CustomEntry[]
   headings: Headings
 }

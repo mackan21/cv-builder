@@ -1,4 +1,4 @@
-import type { Certification, Education, Experience } from '../types/cv'
+import type { Certification, CustomEntry, Education, Experience } from '../types/cv'
 
 export function hasExperienceContent(item: Experience) {
   return Boolean(
@@ -19,4 +19,8 @@ export function hasEducationContent(item: Education) {
 
 export function hasCertificationContent(item: Certification) {
   return Boolean(item.name?.trim() || item.issuer?.trim() || item.date?.trim() || item.url?.trim())
+}
+
+export function hasCustomEntryContent(item: CustomEntry) {
+  return Boolean(item.title?.trim() || item.subtitle?.trim() || item.date?.trim() || item.description?.trim())
 }
