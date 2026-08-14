@@ -1,9 +1,9 @@
-# Formolio
+# CV Builder
 
 Build a resume section by section, watch it take shape on a real page as you type,
 and export it straight to a print-ready PDF.
 
-![Formolio screenshot](docs/screenshot.png)
+![CV Builder screenshot](docs/screenshot.png)
 
 ## Why
 
