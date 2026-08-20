@@ -11,10 +11,9 @@ import '@fontsource/inter/700.css'
 // (Times New Roman, Arial Nova, Calibri) — same fonts the PDF export uses,
 // via src/pdf/fonts.ts, so preview and export always match.
 import '@fontsource/tinos/400.css'
+import '@fontsource/arimo/400.css'
 import '@fontsource/arimo/700.css'
-import '@fontsource/carlito/400.css'
-import '@fontsource/carlito/700.css'
-import '@fontsource/carlito/400-italic.css'
+import '@fontsource/arimo/400-italic.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'

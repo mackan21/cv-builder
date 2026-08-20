@@ -1,9 +1,8 @@
 import { Font } from '@react-pdf/renderer'
 import tinosRegular from '@fontsource/tinos/files/tinos-latin-400-normal.woff'
+import arimoRegular from '@fontsource/arimo/files/arimo-latin-400-normal.woff'
 import arimoBold from '@fontsource/arimo/files/arimo-latin-700-normal.woff'
-import carlitoRegular from '@fontsource/carlito/files/carlito-latin-400-normal.woff'
-import carlitoBold from '@fontsource/carlito/files/carlito-latin-700-normal.woff'
-import carlitoItalic from '@fontsource/carlito/files/carlito-latin-400-italic.woff'
+import arimoItalic from '@fontsource/arimo/files/arimo-latin-400-italic.woff'
 
 let registered = false
 
@@ -28,15 +27,24 @@ function hyphenationCallback(word: string): string[] {
 // template is styled after (Times New Roman, Arial Nova, Calibri). Same glyph
 // widths, so layout matches exactly, but freely licensed for a public repo.
 //
-// Known limitation: @react-pdf/renderer's font subsetting doesn't record
-// correct Unicode codepoints for ligature glyphs (e.g. "ti", "tt", "fl"),
-// so copying text out of the exported PDF (or an ATS scanning it) can drop
-// a letter from those pairs, e.g. "applikationer" -> "applikatoner". Purely
-// a copy/paste and text-extraction issue, the rendered PDF itself is
-// pixel-correct. No public API in @react-pdf/renderer to disable ligature
-// substitution or fix the ToUnicode mapping (checked font/layout/pdfkit
-// packages directly, see git history 2026-08-11). Would require patching
-// their bundled fontkit fork, not worth the fragility.
+// Body text uses Arimo, not Calibri's clone Carlito: root-caused via fontkit
+// directly against the actual font files (`font.availableFeatures`) that
+// Carlito ships a "liga" OpenType feature substituting "ti"/"tt"/"fi"/"fl"/
+// "ft" into single ligature glyphs, and @react-pdf/renderer's font-
+// subsetting step loses the correct Unicode codepoint mapping for those
+// glyphs when embedding the subset font in the PDF -- confirmed against a
+// real generated CV where copying the text (or an ATS parsing it) silently
+// dropped a letter from exactly those pairs (e.g. "applikationer" ->
+// "applikatoner"), while the rendered PDF stayed pixel-correct throughout.
+// Tinos and Arimo both have zero ligature features (checked with the same
+// tool), so there's no ligature glyph for subsetting to ever mismap. The
+// original 2026-08-11 investigation (see git history) targeted fixing the
+// subsetting/ToUnicode step itself, which genuinely has no public API for
+// it -- switching away from the one font that triggers the ligature
+// substitution sidesteps the problem instead of patching react-pdf's
+// bundled fontkit fork. The HTML preview switched fonts to match (see
+// main.tsx, ResumePage.module.css) so it still shows exactly what the PDF
+// export produces.
 //
 // Known limitation: only the -latin glyph subset of each font is registered
 // here, while the HTML preview (see main.tsx) loads the full @fontsource
@@ -47,12 +55,12 @@ function hyphenationCallback(word: string): string[] {
 // Vietnamese characters can render correctly in the live preview but show
 // missing glyphs in the exported PDF. A real fix would mean detecting the
 // script of each piece of user text and registering/selecting the matching
-// subset font at render time, roughly 20 extra font files across Tinos/
-// Arimo/Carlito, which meaningfully bloats the bundle for every user to
-// cover a rare case. Deliberately not built, same tradeoff call as the
-// ligature issue above. CJK glyphs aren't in these font families at all, in
-// the preview or the PDF, so no amount of subset-loading fixes that; it
-// would require swapping the whole typeface.
+// subset font at render time, roughly a dozen extra font files across Tinos/
+// Arimo, which meaningfully bloats the bundle for every user to cover a
+// rare case. Deliberately not built, same tradeoff call as the ligature
+// issue above. CJK glyphs aren't in these font families at all, in the
+// preview or the PDF, so no amount of subset-loading fixes that; it would
+// require swapping the whole typeface.
 export function registerPdfFonts() {
   if (registered) return
   registered = true
@@ -64,15 +72,10 @@ export function registerPdfFonts() {
 
   Font.register({
     family: 'Arimo',
-    fonts: [{ src: arimoBold, fontWeight: 700 }],
-  })
-
-  Font.register({
-    family: 'Carlito',
     fonts: [
-      { src: carlitoRegular, fontWeight: 400, fontStyle: 'normal' },
-      { src: carlitoBold, fontWeight: 700, fontStyle: 'normal' },
-      { src: carlitoItalic, fontWeight: 400, fontStyle: 'italic' },
+      { src: arimoRegular, fontWeight: 400, fontStyle: 'normal' },
+      { src: arimoBold, fontWeight: 700, fontStyle: 'normal' },
+      { src: arimoItalic, fontWeight: 400, fontStyle: 'italic' },
     ],
   })
 

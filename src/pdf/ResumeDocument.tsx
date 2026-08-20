@@ -5,13 +5,13 @@ import { buildContactLines, normalizeUrl, type ContactItem } from '../utils/cont
 
 // react-pdf has no CSS Grid, so the shared skill-label column width (matching
 // the HTML preview's grid-template-columns: max-content) is measured by hand
-// via canvas, using the same bold uppercase Carlito styling the label renders in.
+// via canvas, using the same bold uppercase Arimo styling the label renders in.
 function measureSkillLabelWidth(labels: string[]): number {
   if (labels.length === 0) return 0
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   if (!ctx) return 90
-  ctx.font = '700 13.33px Carlito' // 10pt bold, px = pt * 4/3
+  ctx.font = '700 13.33px Arimo' // 10pt bold, px = pt * 4/3
   const widestPx = Math.max(...labels.map((label) => ctx.measureText(label.toUpperCase()).width))
   return Math.ceil(widestPx * 0.75) + 6 // px back to pt, plus a small safety margin
 }
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2 * CM,
     paddingLeft: 2 * CM,
     paddingRight: 2 * CM,
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     color: '#000000',
   },
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   contactLine: {
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     textAlign: 'center',
     color: '#000000',
@@ -87,14 +87,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   summaryText: {
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     color: '#000000',
     lineHeight: 1.35,
   },
   skillRow: {
     flexDirection: 'row',
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     color: '#000000',
   },
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   entryRole: {
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     color: '#000000',
     flexDirection: 'row',
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   entryDates: {
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     color: '#000000',
   },
@@ -148,13 +148,13 @@ const styles = StyleSheet.create({
   },
   bulletMark: {
     width: 12,
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     color: '#000000',
   },
   bulletText: {
     flex: 1,
-    fontFamily: 'Carlito',
+    fontFamily: 'Arimo',
     fontSize: 10,
     color: '#000000',
     lineHeight: 1.3,
